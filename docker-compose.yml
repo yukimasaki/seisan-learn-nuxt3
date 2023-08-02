@@ -5,7 +5,7 @@ services:
     container_name: seisan-front
     networks:
       default:
-      aifuku-network:
+      seisan-network:
         aliases:
           - seisan-front-container
     build:
