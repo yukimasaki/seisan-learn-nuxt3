@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+  seisan-front:
+    container_name: seisan-front
+    networks:
+      default:
+      aifuku-network:
+        aliases:
+          - seisan-front-container
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./src/frontend:/work
+    tty: true
+    restart: always
+
+networks:
+  seisan-network:
+    external: true
