@@ -1,10 +1,10 @@
 <template>
   <div class="flex h-screen overflow-hidden">
-    <sidebar></sidebar>
+    <Sidebar></Sidebar>
     <div class="relative flex-1 flex-col overflow-y-auto overflow-x-hidden">
-      <header></header>
+      <HeaderLoggedIn></HeaderLoggedIn>
       <slot />
-      <footer></footer>
+      <Footer></Footer>
     </div>
   </div>
 </template>

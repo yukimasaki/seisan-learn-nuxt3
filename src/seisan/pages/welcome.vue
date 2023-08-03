@@ -19,7 +19,7 @@
 
 <script setup>
 definePageMeta({
-  layout: ['guest'],
+  layout: 'before-login',
 });
 
 const toLoginPage = () => {

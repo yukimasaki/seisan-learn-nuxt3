@@ -1,9 +1,9 @@
 <template>
   <div class="flex h-screen overflow-hidden">
     <div class="relative flex-1 flex-col overflow-y-auto overflow-x-hidden">
-      <header-guest></header-guest>
+      <HeaderBeforeLogin></HeaderBeforeLogin>
       <slot />
-      <footer></footer>
+      <Footer></Footer>
     </div>
   </div>
 </template>

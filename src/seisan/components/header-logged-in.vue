@@ -7,7 +7,9 @@
           class="lg:hidden items-center gap-2 md:flex md:gap-4"
           @click="toggleSidebar()"
         >
-          <icon-baseline-menu></icon-baseline-menu>
+          <icon>
+            <IconBaselineMenu></IconBaselineMenu>
+          </icon>
         </div>
         <!-- Hamburger Toggle Button -->
 
@@ -22,7 +24,9 @@
           <!-- Icon Sample -->
           <ul class="flex items-center gap-2">
             <li class="relative">
-              <icon-baseline-notifications></icon-baseline-notifications>
+              <icon>
+                <IconBaselineNotifications></IconBaselineNotifications>
+              </icon>
             </li>
           </ul>
           <!-- Icon Sample -->
@@ -42,7 +46,7 @@
               </div>
 
               <icon :class="dropdownOpen && 'rotate-180'">
-                <icon-baseline-expand-more></icon-baseline-expand-more>
+                <IconBaselineExpandMore></IconBaselineExpandMore>
               </icon>
             </a>
 
@@ -51,24 +55,29 @@
               <ul class="flex flex-col gap-5 border-b border-stroke px-6 py-7">
                 <li>
                   <a href="profile.html" class="flex items-center gap-3 text-sm font-medium duration-300 ease-in-out hover:text-primary">
-                    <icon-baseline-account-circle></icon-baseline-account-circle>
+                    <icon>
+                      <IconBaselineAccountCircle></IconBaselineAccountCircle>
+                    </icon>
                     My Profile
                   </a>
                 </li>
                 <li>
                   <a href="settings.html" class="flex items-center gap-3 text-sm font-medium duration-300 ease-in-out hover:text-primary">
-                    <icon-baseline-settings></icon-baseline-settings>
+                    <icon>
+                      <IconBaselineSettings></IconBaselineSettings>
+                    </icon>
                     Account Settings
                   </a>
                 </li>
                 <li>
                   <a href="settings.html" class="flex items-center gap-3 text-sm font-medium duration-300 ease-in-out hover:text-primary">
-                    <icon-baseline-logout></icon-baseline-logout>
+                    <icon>
+                      <IconBaselineLogout></IconBaselineLogout>
+                    </icon>
                     Logout
                   </a>
                 </li>
               </ul>
-              <!-- <app-logout-button></app-logout-button> -->
             </div>
             <!-- Dropdown End -->
           </div>

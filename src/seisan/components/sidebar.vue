@@ -6,14 +6,14 @@
     <!-- SIDEBAR HEADER -->
     <div class="flex items-center justify-between gap-2 px-6 py-5 lg:py-6">
       <!-- Logo -->
-      <div class="flex justify-center items-center rounded text-base-100 bg-stone-400 w-28 h-12">LOGO</div>
+      <AppLogo></AppLogo>
 
       <!-- Close Btn -->
       <button
         class="lg:hidden"
         @click="toggleSidebar()"
       >
-        <icon-baseline-keyboard-arrow-left></icon-baseline-keyboard-arrow-left>
+        <IconBaselineKeyboardArrowLeft></IconBaselineKeyboardArrowLeft>
       </button>
     </div>
     <!-- SIDEBAR HEADER -->
