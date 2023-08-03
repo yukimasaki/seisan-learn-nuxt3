@@ -6,7 +6,7 @@
     <!-- SIDEBAR HEADER -->
     <div class="flex items-center justify-between gap-2 px-6 py-5 lg:py-6">
       <!-- Logo -->
-      <div class="flex justify-center items-center rounded text-stone-100 bg-stone-400 w-28 h-12">LOGO</div>
+      <div class="flex justify-center items-center rounded text-base-100 bg-stone-400 w-28 h-12">LOGO</div>
 
       <!-- Close Btn -->
       <button

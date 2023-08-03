@@ -36,7 +36,7 @@
               </span>
 
               <div class="avatar placeholder">
-                <div class="bg-stone-400 text-stone-100 rounded-full w-8">
+                <div class="bg-stone-400 text-base-100 rounded-full w-8">
                   <span class="text-2xl">JP</span>
                 </div>
               </div>
