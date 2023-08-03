@@ -6,7 +6,9 @@
     <!-- SIDEBAR HEADER -->
     <div class="flex items-center justify-between gap-2 px-6 py-5 lg:py-6">
       <!-- Logo -->
-      <AppLogo></AppLogo>
+      <div @click="toggleSidebar()">
+        <AppLogo></AppLogo>
+      </div>
 
       <!-- Close Btn -->
       <button
