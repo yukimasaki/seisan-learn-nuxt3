@@ -1,6 +1,11 @@
 <template>
-  <h1 class="text-3xl font-bold underline">
-    Hello world!
-  </h1>
-  <button class="btn btn-primary drop-shadow">dasyUI</button>
+  <div class="flex h-screen overflow-hidden">
+    <Sidebar></Sidebar>
+    <div class="relative flex-1 flex-col overflow-y-auto overflow-x-hidden">
+      <Header></Header>
+      <!-- メインコンテンツ -->
+      <!-- フッター -->
+      <Footer></Footer>
+    </div>
+  </div>
 </template>
