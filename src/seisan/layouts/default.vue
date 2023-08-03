@@ -1,11 +1,10 @@
 <template>
   <div class="flex h-screen overflow-hidden">
-    <Sidebar></Sidebar>
+    <sidebar></sidebar>
     <div class="relative flex-1 flex-col overflow-y-auto overflow-x-hidden">
-      <Header></Header>
-      <NuxtPage></NuxtPage>
-      <!-- フッター -->
-      <Footer></Footer>
+      <header></header>
+      <slot />
+      <footer></footer>
     </div>
   </div>
 </template>
