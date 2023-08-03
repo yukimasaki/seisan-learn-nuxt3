@@ -3,13 +3,11 @@
     <header class="sticky top-0 z-30 flex w-full bg-base-100 drop-shadow">
       <div class="flex flex-grow items-center justify-between py-4 px-4 shadow-sm">
         <!-- Hamburger Toggle Button -->
-        <div class="lg:hidden items-center gap-2 md:flex md:gap-4">
-          <button
-            class="lg:hidden btn btn-square z-50 bg-base-100 p-1 shadow-sm"
-            @click="toggleSidebar()"
-          >
-            <icon-baseline-menu></icon-baseline-menu>
-          </button>
+        <div
+          class="lg:hidden items-center gap-2 md:flex md:gap-4"
+          @click="toggleSidebar()"
+        >
+          <icon-baseline-menu></icon-baseline-menu>
         </div>
         <!-- Hamburger Toggle Button -->
 
@@ -38,7 +36,7 @@
               </span>
 
               <div class="avatar placeholder">
-                <div class="bg-neutral-focus text-neutral-content rounded-full w-10">
+                <div class="bg-stone-400 text-stone-100 rounded-full w-8">
                   <span class="text-2xl">JP</span>
                 </div>
               </div>
@@ -53,14 +51,20 @@
               <ul class="flex flex-col gap-5 border-b border-stroke px-6 py-7">
                 <li>
                   <a href="profile.html" class="flex items-center gap-3 text-sm font-medium duration-300 ease-in-out hover:text-primary">
-                    <icon>account_circle</icon>
+                    <icon-baseline-account-circle></icon-baseline-account-circle>
                     My Profile
                   </a>
                 </li>
                 <li>
                   <a href="settings.html" class="flex items-center gap-3 text-sm font-medium duration-300 ease-in-out hover:text-primary">
-                    <icon>settings</icon>
+                    <icon-baseline-settings></icon-baseline-settings>
                     Account Settings
+                  </a>
+                </li>
+                <li>
+                  <a href="settings.html" class="flex items-center gap-3 text-sm font-medium duration-300 ease-in-out hover:text-primary">
+                    <icon-baseline-logout></icon-baseline-logout>
+                    Logout
                   </a>
                 </li>
               </ul>

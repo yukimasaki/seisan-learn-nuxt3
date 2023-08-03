@@ -6,16 +6,14 @@
     <!-- SIDEBAR HEADER -->
     <div class="flex items-center justify-between gap-2 px-6 py-5 lg:py-6">
       <!-- Logo -->
-      <a href="#">
-        <img src="../assets/images/site-logo.png" alt="Logo">
-      </a>
+      <div class="flex justify-center items-center rounded text-stone-100 bg-stone-400 w-28 h-12">LOGO</div>
 
       <!-- Close Btn -->
       <button
         class="lg:hidden"
         @click="toggleSidebar()"
       >
-        <icon>arrow_back</icon>
+        <icon-baseline-keyboard-arrow-left></icon-baseline-keyboard-arrow-left>
       </button>
     </div>
     <!-- SIDEBAR HEADER -->
