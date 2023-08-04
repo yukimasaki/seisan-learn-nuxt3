@@ -1,6 +1,6 @@
 <template>
   <div>
-    List Page
+    <Calendar></Calendar>
   </div>
 </template>
 
