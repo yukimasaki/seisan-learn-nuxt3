@@ -5,7 +5,8 @@
       <div class="sticky top-16 z-20">
         <!-- カレンダー全体 -->
         <Calendar></Calendar>
-        <div class="p-2 w-full bg-stone-200 drop-shadow">詳細</div>
+        <!-- 明細一覧 -->
+        <div class="p-1 w-full bg-stone-200 drop-shadow">詳細</div>
       </div>
 
       <div v-for="detail in details" :key="detail.id">
@@ -20,13 +21,11 @@
 </template>
 
 <script setup lang="ts">
+import { randBetween } from '../utils/randBetween';
+
 definePageMeta({
   middleware: 'auth-guard',
 });
-
-const randBetween = (min: number, max: number) => {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
 
 const details = Array.from({ length: 50 }, (_, index) => ({
   id: index + 1,
