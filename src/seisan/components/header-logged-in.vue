@@ -1,5 +1,5 @@
 <template>
-  <header class="navbar bg-base-100 drop-shadow" ref="headerRef">
+  <header class="navbar bg-base-100 drop-shadow">
     <div class="flex flex-grow items-center justify-between">
       <!-- Hamburger Toggle Button -->
       <button
@@ -96,10 +96,4 @@ const dropdownOpen = ref(false);
 const toggleSidebar = () => {
   visibleSidebar.value = !visibleSidebar.value;
 }
-
-const headerRef = ref();
-onMounted(() => {
-  const headerHeight: number = ref(headerRef.value.clientHeight);
-  useState('headerHeight', () => headerHeight);
-});
 </script>

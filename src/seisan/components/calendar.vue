@@ -1,19 +1,6 @@
 <template>
-  <div class="w-full bg-base-100 calced-height">
+  <!-- 64px: ヘッダーの高さ、24px: フッターの高さをハードコーディングしている -->
+  <div class="w-full bg-base-100 h-[calc(100vh-64px-24px)]">
     aaaa
   </div>
 </template>
-
-<script setup lang="ts">
-onMounted(() => {
-  const headerHeightState = useState('headerHeight');
-  const headerHeightValue = `${headerHeightState.value}px`;
-  console.log(headerHeightValue);
-});
-</script>
-
-<style>
-.calced-height {
-  height: 100vh - v-bind('headerHeightValue');
-}
-</style>
