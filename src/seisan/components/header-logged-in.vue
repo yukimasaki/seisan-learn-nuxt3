@@ -1,5 +1,5 @@
 <template>
-  <header class="navbar bg-base-100 drop-shadow">
+  <header class="sticky top-0 z-30 p-4 flex w-full bg-base-100 drop-shadow">
     <div class="flex flex-grow items-center justify-between">
       <!-- Hamburger Toggle Button -->
       <button
@@ -32,7 +32,7 @@
 
         <!-- User Area -->
         <div class="relative">
-          <a class="flex items-center gap-4" href="#" @click="dropdownOpen = !dropdownOpen">
+          <div class="flex items-center gap-4" @click="dropdownOpen = !dropdownOpen">
             <span class="hidden text-right lg:block">
               <span class="block text-sm font-medium text-black">Ms. Anko</span>
               <span class="block text-xs font-medium">Chief Engineer</span>
@@ -47,7 +47,7 @@
             <icon :class="dropdownOpen && 'rotate-180'">
               <IconBaselineExpandMore></IconBaselineExpandMore>
             </icon>
-          </a>
+          </div>
 
           <!-- Dropdown Start -->
           <div v-if="dropdownOpen" class="absolute right-0 mt-4 flex w-64 flex-col rounded-sm border border-stroke bg-base-100 shadow">
