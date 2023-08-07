@@ -10,6 +10,7 @@
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
+    "@nuxtjs/dayjs": "^1.4.1",
     "@types/node": "^18.17.1",
     "autoprefixer": "^10.4.14",
     "daisyui": "^3.5.0",
