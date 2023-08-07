@@ -11,7 +11,6 @@ export default defineNuxtConfig({
   },
   modules: [
     '@vite-pwa/nuxt',
-    '@nuxtjs/dayjs',
   ],
   app: {
     head: {
