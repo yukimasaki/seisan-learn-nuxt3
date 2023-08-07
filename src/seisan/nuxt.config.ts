@@ -9,7 +9,10 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
-  modules: ['@vite-pwa/nuxt'],
+  modules: [
+    '@vite-pwa/nuxt',
+    '@nuxtjs/dayjs',
+  ],
   app: {
     head: {
       link: [
