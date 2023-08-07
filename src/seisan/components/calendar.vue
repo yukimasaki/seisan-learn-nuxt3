@@ -34,6 +34,10 @@
 
 <script setup lang="ts">
 import { randBetween } from '../utils/randBetween';
+import dayjs from 'dayjs';
+
+const now = dayjs().format();
+console.log(now);
 
 const daysLabel = ['日', '月', '火', '水', '木', '金', '土'];
 
