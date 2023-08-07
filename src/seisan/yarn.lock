@@ -1591,14 +1591,6 @@
     vite-plugin-checker "^0.6.1"
     vue-bundle-renderer "^1.0.3"
 
-"@nuxtjs/dayjs@^1.4.1":
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/@nuxtjs/dayjs/-/dayjs-1.4.1.tgz#a1ff4dba8b9f9f423577264783f50a5492af1cae"
-  integrity sha512-FgZoFqXxwRPoNJwcN3Up8jvxKnwalIZJF4rX5MWmMpJej75Rl/ShPKkkNxgf3x3gUopOyRjTCLRq/LAVFwY0Pg==
-  dependencies:
-    consola "^2.10.1"
-    dayjs "^1.10.4"
-
 "@pkgjs/parseargs@^0.11.0":
   version "0.11.0"
   resolved "https://registry.yarnpkg.com/@pkgjs/parseargs/-/parseargs-0.11.0.tgz#a77ea742fab25775145434eb1d2328cf5013ac33"
@@ -2783,11 +2775,6 @@ concat-map@0.0.1:
   resolved "https://registry.yarnpkg.com/concat-map/-/concat-map-0.0.1.tgz#d8a96bd77fd68df7793a73036a3ba0d5405d477b"
   integrity sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==
 
-consola@^2.10.1:
-  version "2.15.3"
-  resolved "https://registry.yarnpkg.com/consola/-/consola-2.15.3.tgz#2e11f98d6a4be71ff72e0bdf07bd23e12cb61550"
-  integrity sha512-9vAdYbHj6x2fLKC4+oPH0kFzY/orMZyG2Aj+kNylHxKGJ/Ed4dpNyAQYwJOdqO4zdM7XpVHmyejQDcQHrnuXbw==
-
 consola@^3.2.2, consola@^3.2.3:
   version "3.2.3"
   resolved "https://registry.yarnpkg.com/consola/-/consola-3.2.3.tgz#0741857aa88cfa0d6fd53f1cff0375136e98502f"
@@ -2982,11 +2969,6 @@ data-uri-to-buffer@^4.0.0:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/data-uri-to-buffer/-/data-uri-to-buffer-4.0.1.tgz#d8feb2b2881e6a4f58c2e08acfd0e2834e26222e"
   integrity sha512-0R9ikRb668HB7QDxT1vkpuUBtqc53YyAwMwGeUFKRojY/NWKvdZ+9UYtRfGmhqNbRkTSVpMbmyhXipFFv2cb/A==
-
-dayjs@^1.10.4:
-  version "1.11.9"
-  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.9.tgz#9ca491933fadd0a60a2c19f6c237c03517d71d1a"
-  integrity sha512-QvzAURSbQ0pKdIye2txOzNaHmxtUBXerpY0FJsFXUMKbIZeFm5ht1LS/jFsrncjnmtv8HsG0W2g6c0zUjZWmpA==
 
 debug@2.6.9:
   version "2.6.9"
