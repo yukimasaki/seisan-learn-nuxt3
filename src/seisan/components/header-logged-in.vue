@@ -1,5 +1,5 @@
 <template>
-  <header class="sticky top-0 z-30 p-4 flex w-full bg-base-100 drop-shadow">
+  <header class="sticky top-0 z-30 p-4 tb:p-2 flex w-full bg-base-100 drop-shadow">
     <div class="flex flex-grow items-center justify-between">
       <!-- Hamburger Toggle Button -->
       <button
