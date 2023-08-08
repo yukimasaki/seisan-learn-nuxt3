@@ -3,32 +3,33 @@
     <!-- カレンダーのヘッダー部分 -->
     <div class="p-1 bg-stone-200">
       <div class="flex justify-between px-10 tb:px-4 items-center">
-        <div class="">2023年 10月</div>
-        <div class="">&lt; &gt;</div>
+        <div>2023年 10月</div>
+        <div>
+          <span @click="navigateMonth('prev')">＜</span>
+          <span @click="navigateMonth('next')">＞</span>
+        </div>
       </div>
     </div>
     <!-- カレンダーのボディ部分 -->
-    <table>
-      <thead>
-        <tr>
-          <th v-for="label in daysLabel" class="border-stone-300 text-stone-400 font-normal text-sm pt-0.5 px-2">{{ label }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="week in weeks" :key="week.id" class="text-center">
-          <td v-for="day in days" :key="day.id" class="border-stone-300 px-1 pt-0.5 h-12">
-            <div class="flex flex-col h-12 mx-auto">
-              <div class="top h-5 w-full">
-                <span class="text-black font-bold">{{ day.value }}</span>
-              </div>
-              <div class="bottom flex-grow h-7 py-1 w-full cursor-pointer">
-                <div class="text-xs">{{ day.amount }}</div>
-              </div>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="grid grid-cols-7 gap-1">
+      <span
+        class="self-center justify-self-center border-stone-300 text-stone-400 text-xs pt-0.5 px-2"
+        v-for="dayLabel in dayLabels"
+      >
+        {{ dayLabel }}
+      </span>
+    </div>
+    <div class="grid grid-cols-7 gap-1">
+      <div
+        v-for="date in dates"
+        class="flex flex-col h-12 mx-auto justify-center"
+      >
+        <div class="top h-5 w-full text-sm text-center">{{ date }}</div>
+        <div class="bottom flex-grow h-7 py-1 w-full cursor-pointer text-center">
+          <div class="text-xs">7,777</div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -54,18 +55,13 @@ const dates = computed(() => {
   return data;
 });
 
-console.log(dates);
+const dayLabels = ['日', '月', '火', '水', '木', '金', '土'];
 
-const daysLabel = ['日', '月', '火', '水', '木', '金', '土'];
-
-const days = Array.from({ length: 7 }, (_, index) => ({
-  id: index,
-  value: index + 1,
-  amount: randBetween(98, 19800),
-}));
-
-const weeks = Array.from({ length: 4 }, (_, index) => ({
-  id: index,
-  value: index + 1,
-}));
+const navigateMonth = (direction: string) => {
+  if (direction === 'prev') {
+    console.log(`前月を表示する`);
+  } else {
+    console.log(`次月を表示する`);
+  }
+}
 </script>
