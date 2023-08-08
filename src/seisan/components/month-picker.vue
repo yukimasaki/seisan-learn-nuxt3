@@ -12,7 +12,7 @@
         <!-- ヘッダー部分 -->
         <div class="flex justify-between">
           <span>＜</span>
-          <span>2023</span>
+          <span>{{ now.format('YYYY') }}</span>
           <span>＞</span>
         </div>
 
@@ -23,7 +23,7 @@
             class="self-center justify-self-center"
             @click="onSelectMonthPicker()"
           >
-            {{ month }}月
+            {{ month.format('M') }}月
           </span>
         </div>
       </form>
@@ -39,7 +39,9 @@ import dayjs, { Dayjs } from 'dayjs';
 
 const now = ref(dayjs());
 const selectedYearMonth: Ref<Dayjs | undefined> = ref();
-const months = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
+const months = Array.from({ length: 12 }, (_, monthIndex) => {
+  return dayjs().month(monthIndex).startOf('month');
+});
 
 const onSelectMonthPicker = () => {}
 </script>
