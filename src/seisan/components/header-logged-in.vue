@@ -6,9 +6,9 @@
         class="lg:hidden btn btn-square btn-ghost"
         @click="toggleSidebar()"
       >
-        <icon>
+        <span>
           <IconBaselineMenu></IconBaselineMenu>
-        </icon>
+        </span>
       </button>
       <!-- Hamburger Toggle Button -->
 
@@ -23,9 +23,9 @@
         <!-- Icon Sample -->
         <ul class="flex items-center gap-2">
           <li class="relative">
-            <icon>
+            <span>
               <IconBaselineNotifications></IconBaselineNotifications>
-            </icon>
+            </span>
           </li>
         </ul>
         <!-- Icon Sample -->
@@ -44,9 +44,9 @@
               </div>
             </div>
 
-            <icon :class="dropdownOpen && 'rotate-180'">
+            <span :class="dropdownOpen && 'rotate-180'">
               <IconBaselineExpandMore></IconBaselineExpandMore>
-            </icon>
+            </span>
           </div>
 
           <!-- Dropdown Start -->
@@ -54,25 +54,25 @@
             <ul class="flex flex-col gap-5 border-b border-stroke px-6 py-7">
               <li>
                 <a href="profile.html" class="flex items-center gap-3 text-sm font-medium duration-300 ease-in-out hover:text-primary">
-                  <icon>
+                  <span>
                     <IconBaselineAccountCircle></IconBaselineAccountCircle>
-                  </icon>
+                  </span>
                   My Profile
                 </a>
               </li>
               <li>
                 <a href="settings.html" class="flex items-center gap-3 text-sm font-medium duration-300 ease-in-out hover:text-primary">
-                  <icon>
+                  <span>
                     <IconBaselineSettings></IconBaselineSettings>
-                  </icon>
+                  </span>
                   Account Settings
                 </a>
               </li>
               <li>
                 <a href="settings.html" class="flex items-center gap-3 text-sm font-medium duration-300 ease-in-out hover:text-primary">
-                  <icon>
+                  <span>
                     <IconBaselineLogout></IconBaselineLogout>
-                  </icon>
+                  </span>
                   Logout
                 </a>
               </li>
