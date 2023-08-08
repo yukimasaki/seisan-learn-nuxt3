@@ -36,8 +36,25 @@
 import { randBetween } from '../utils/randBetween';
 import dayjs from 'dayjs';
 
-const now = dayjs().format();
-console.log(now);
+// 月末の日にち
+const endDate = dayjs().endOf('month').get('date');
+
+// 月初の曜日
+const startWeekday = dayjs().startOf('month').get('day');
+
+// カレンダーに表示する配列を生成
+const dates = computed(() => {
+  let data: string[] = [];
+  // 月初までは空欄を表示
+  Array.from({ length: startWeekday }, (_, index) => data.push(''));
+
+  // 当月の日付を表示
+  Array.from({ length: endDate }, (_, index) => data.push((index + 1).toString()));
+
+  return data;
+});
+
+console.log(dates);
 
 const daysLabel = ['日', '月', '火', '水', '木', '金', '土'];
 
