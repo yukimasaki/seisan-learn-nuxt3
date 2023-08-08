@@ -3,7 +3,7 @@
     <!-- カレンダーのヘッダー部分 -->
     <div class="p-1 bg-stone-200">
       <div class="flex justify-between px-10 tb:px-4 items-center">
-        <div>2023年 10月</div>
+        <MonthPicker></MonthPicker>
         <div>
           <span @click="navigateMonth('prev')">＜</span>
           <span @click="navigateMonth('next')">＞</span>
