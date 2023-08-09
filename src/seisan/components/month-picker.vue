@@ -10,17 +10,23 @@
     <dialog id="my_month_picker" class="modal">
       <form method="dialog" class="modal-box">
         <!-- ヘッダー部分 -->
-        <div class="flex justify-between pb-2">
-          <span>＜</span>
-          <span>{{ currentYearMonth.format('YYYY') }}</span>
-          <span>＞</span>
+        <div class="flex justify-between">
+          <div class="btn btn-ghost" @click="navigateMonth('prev')">
+            <IconBaselineKeyboardArrowLeft></IconBaselineKeyboardArrowLeft>
+          </div>
+          <div class="btn btn-ghost">
+            {{ currentYearMonth.format('YYYY') }}
+          </div>
+          <div class="btn btn-ghost" @click="navigateMonth('next')">
+            <IconBaselineKeyboardArrowRight></IconBaselineKeyboardArrowRight>
+          </div>
         </div>
 
         <!-- ボディ部分 -->
         <div class="grid grid-cols-4 ">
           <button
             v-for="month in months"
-            class="modal-action btn btn-ghost self-center justify-self-center m-0"
+            class="btn btn-ghost self-center justify-self-center m-0"
             @click="onSelectMonthPicker(month)"
           >
             {{ month.format('M') }}月
@@ -41,6 +47,14 @@ const currentYearMonth = ref(dayjs());
 
 const onSelectMonthPicker = (month: Dayjs) => {
   currentYearMonth.value = month;
+}
+
+const navigateMonth = (direction: string) => {
+  if (direction === 'prev') {
+    console.log(`前月を表示する`);
+  } else {
+    console.log(`次月を表示する`);
+  }
 }
 
 const months = Array.from({ length: 12 }, (_, monthIndex) => {

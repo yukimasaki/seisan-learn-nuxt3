@@ -4,9 +4,13 @@
     <div class="p-1 bg-stone-200">
       <div class="flex justify-between px-10 tb:px-4 items-center">
         <MonthPicker></MonthPicker>
-        <div>
-          <span @click="navigateMonth('prev')">＜</span>
-          <span @click="navigateMonth('next')">＞</span>
+        <div class="flex">
+          <button class="btn btn-ghost" @click="navigateMonth('prev')">
+            <IconBaselineKeyboardArrowLeft></IconBaselineKeyboardArrowLeft>
+          </button>
+          <button class="btn btn-ghost" @click="navigateMonth('next')">
+            <IconBaselineKeyboardArrowRight></IconBaselineKeyboardArrowRight>
+          </button>
         </div>
       </div>
     </div>
