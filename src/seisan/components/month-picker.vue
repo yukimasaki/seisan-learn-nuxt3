@@ -4,27 +4,27 @@
       onclick="my_month_picker.showModal()"
       class="btn btn-ghost"
     >
-      {{ now.format('YYYY年M月') }}
+      {{ currentYearMonth.format('YYYY年M月') }}
     </div>
 
     <dialog id="my_month_picker" class="modal">
       <form method="dialog" class="modal-box">
         <!-- ヘッダー部分 -->
-        <div class="flex justify-between">
+        <div class="flex justify-between pb-2">
           <span>＜</span>
-          <span>{{ now.format('YYYY') }}</span>
+          <span>{{ currentYearMonth.format('YYYY') }}</span>
           <span>＞</span>
         </div>
 
         <!-- ボディ部分 -->
-        <div class="grid grid-cols-4 gap-1 ">
-          <span
+        <div class="grid grid-cols-4 ">
+          <button
             v-for="month in months"
-            class="self-center justify-self-center"
-            @click="onSelectMonthPicker()"
+            class="modal-action btn btn-ghost self-center justify-self-center m-0"
+            @click="onSelectMonthPicker(month)"
           >
             {{ month.format('M') }}月
-          </span>
+          </button>
         </div>
       </form>
       <form method="dialog" class="modal-backdrop">
@@ -37,11 +37,13 @@
 <script setup lang="ts">
 import dayjs, { Dayjs } from 'dayjs';
 
-const now = ref(dayjs());
-const selectedYearMonth: Ref<Dayjs | undefined> = ref();
+const currentYearMonth = ref(dayjs());
+
+const onSelectMonthPicker = (month: Dayjs) => {
+  currentYearMonth.value = month;
+}
+
 const months = Array.from({ length: 12 }, (_, monthIndex) => {
   return dayjs().month(monthIndex).startOf('month');
 });
-
-const onSelectMonthPicker = () => {}
 </script>
