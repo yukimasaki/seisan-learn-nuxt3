@@ -57,7 +57,9 @@ const navigateMonth = (direction: string) => {
   }
 }
 
-const months = Array.from({ length: 12 }, (_, monthIndex) => {
-  return dayjs().month(monthIndex).startOf('month');
+const months = computed(() => {
+  return Array.from({ length: 12 }, (_, monthIndex) => {
+    return dayjs(currentYearMonth.value).month(monthIndex).startOf('month');
+  })
 });
 </script>
