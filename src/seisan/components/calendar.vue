@@ -5,10 +5,10 @@
       <div class="flex justify-between px-10 tb:px-4 items-center">
         <MonthPicker></MonthPicker>
         <div class="flex">
-          <button class="btn btn-ghost btn-xs" @click="navigateMonth('prev')">
+          <button class="btn btn-ghost btn-xs" @click="navigateCalendar('prev')">
             <IconBaselineKeyboardArrowLeft></IconBaselineKeyboardArrowLeft>
           </button>
-          <button class="btn btn-ghost btn-xs" @click="navigateMonth('next')">
+          <button class="btn btn-ghost btn-xs" @click="navigateCalendar('next')">
             <IconBaselineKeyboardArrowRight></IconBaselineKeyboardArrowRight>
           </button>
         </div>
@@ -38,17 +38,19 @@
 </template>
 
 <script setup lang="ts">
-import { randBetween } from '../utils/randBetween';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
+
+// 現在時刻をストアに格納
+const currentYearMonth: Ref<Dayjs> = useState('currentYearMonth', () => dayjs());
 
 // 月末の日にち
-const endDate = ref(dayjs().endOf('month').get('date'));
+const endDate: Ref<number> = ref(currentYearMonth.value.endOf('month').get('date'));
 
 // 月初の曜日
-const startWeekday = ref(dayjs().startOf('month').get('day'));
+const startWeekday: Ref<number> = ref(currentYearMonth.value.startOf('month').get('day'));
 
 // カレンダーに表示する配列を生成
-const dates = computed(() => {
+const dates: ComputedRef<string[]> = computed(() => {
   let data: string[] = [];
   // 月初までは空欄を表示
   Array.from({ length: startWeekday.value }, (_, index) => data.push(''));
@@ -62,18 +64,22 @@ const dates = computed(() => {
 // カレンダーに表示する曜日ラベル
 const dayLabels = ['日', '月', '火', '水', '木', '金', '土'];
 
-// カレンダーの戻る・進むボタンを押した回数に応じてカレンダーの表示内容を更新する
-const navigateCount = ref(1);
-const navigateMonth = (direction: string): void => {
-  const count = navigateCount.value++
+// カレンダーの戻る・進むボタンが押されるとカレンダーの表示内容を更新する
+const navigateCalendar = (direction: string): void => {
+  let month: Dayjs;
   if (direction === 'prev') {
-    // 1か月前
-    endDate.value = dayjs().subtract(count, 'month').endOf('month').date();
-    startWeekday.value = dayjs().subtract(count, 'month').startOf('month').get('day');
+    month = dayjs(currentYearMonth.value).subtract(1, 'month');
   } else {
-    // 1か月後
-    endDate.value = dayjs().add(count, 'month').endOf('month').date();
-    startWeekday.value = dayjs().add(count, 'month').startOf('month').get('day');
+    month = dayjs(currentYearMonth.value).add(1, 'month');
   }
+  endDate.value = month.endOf('month').get('date');
+  startWeekday.value = month.startOf('month').get('day');
+  currentYearMonth.value = month;
 }
+
+// 年月ピッカーで月が選択されるとカレンダーの表示内容を更新する
+watch(currentYearMonth, (next, prev) => {
+  endDate.value = next.endOf('month').get('date');
+  startWeekday.value = next.startOf('month').get('day');
+});
 </script>

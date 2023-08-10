@@ -43,7 +43,7 @@
 <script setup lang="ts">
 import dayjs, { Dayjs } from 'dayjs';
 
-const currentYearMonth = ref(dayjs());
+const currentYearMonth: Ref<Dayjs> = useState('currentYearMonth');
 
 const onSelectMonthPicker = (month: Dayjs) => {
   currentYearMonth.value = month;
