@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@vite-pwa/nuxt": "^0.1.0",
-    "dayjs": "^1.11.9"
+    "dayjs": "^1.11.9",
+    "vue3-touch-events": "^4.1.3"
   }
 }
