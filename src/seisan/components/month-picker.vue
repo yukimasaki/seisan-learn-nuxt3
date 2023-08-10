@@ -15,7 +15,7 @@
             <IconBaselineKeyboardArrowLeft></IconBaselineKeyboardArrowLeft>
           </div>
           <div class="btn btn-ghost">
-            {{ currentYearMonth.format('YYYY') }}
+            {{ pickerYearMonth.format('YYYY') }}
           </div>
           <div class="btn btn-ghost" @click="navigateMonth('next')">
             <IconBaselineKeyboardArrowRight></IconBaselineKeyboardArrowRight>
@@ -45,21 +45,24 @@ import dayjs, { Dayjs } from 'dayjs';
 
 const currentYearMonth: Ref<Dayjs> = useState('currentYearMonth');
 
-const onSelectMonthPicker = (month: Dayjs) => {
+const onSelectMonthPicker = (month: Dayjs): void => {
   currentYearMonth.value = month;
 }
 
-const navigateMonth = (direction: string) => {
+const pickerYearMonth: Ref<Dayjs> = ref(dayjs());
+pickerYearMonth.value = currentYearMonth.value.clone();
+
+const navigateMonth = (direction: string): void => {
   if (direction === 'prev') {
-    console.log(`前月を表示する`);
+    pickerYearMonth.value = dayjs(pickerYearMonth.value).subtract(1, 'year');
   } else {
-    console.log(`次月を表示する`);
+    pickerYearMonth.value = dayjs(pickerYearMonth.value).add(1, 'year');
   }
 }
 
-const months = computed(() => {
+const months: ComputedRef<Dayjs[]> = computed(() => {
   return Array.from({ length: 12 }, (_, monthIndex) => {
-    return dayjs(currentYearMonth.value).month(monthIndex).startOf('month');
+    return dayjs(pickerYearMonth.value).month(monthIndex).startOf('month');
   });
 });
 </script>
