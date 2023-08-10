@@ -5,10 +5,10 @@
       <div class="flex justify-between px-10 tb:px-4 items-center">
         <MonthPicker></MonthPicker>
         <div class="flex">
-          <button class="btn btn-ghost" @click="navigateMonth('prev')">
+          <button class="btn btn-ghost btn-xs" @click="navigateMonth('prev')">
             <IconBaselineKeyboardArrowLeft></IconBaselineKeyboardArrowLeft>
           </button>
-          <button class="btn btn-ghost" @click="navigateMonth('next')">
+          <button class="btn btn-ghost btn-xs" @click="navigateMonth('next')">
             <IconBaselineKeyboardArrowRight></IconBaselineKeyboardArrowRight>
           </button>
         </div>

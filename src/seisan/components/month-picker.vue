@@ -2,7 +2,7 @@
   <div>
     <div
       onclick="my_month_picker.showModal()"
-      class="btn btn-ghost"
+      class="btn btn-ghost btn-xs"
     >
       {{ currentYearMonth.format('YYYY年M月') }}
     </div>
