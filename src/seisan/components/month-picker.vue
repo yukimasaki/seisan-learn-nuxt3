@@ -60,6 +60,6 @@ const navigateMonth = (direction: string) => {
 const months = computed(() => {
   return Array.from({ length: 12 }, (_, monthIndex) => {
     return dayjs(currentYearMonth.value).month(monthIndex).startOf('month');
-  })
+  });
 });
 </script>
