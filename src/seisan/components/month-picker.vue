@@ -51,9 +51,6 @@ import dayjs, { Dayjs } from 'dayjs';
 // カレンダー(親コンポーネント)のヘッダー部分に表示される年月ラベル
 const headerLabel: Ref<Dayjs> = useState('currentYearMonth');
 
-console.log(`年月ピッカー初期化時:`);
-console.log(headerLabel.value.format('YYYY/MM'));
-
 // 年月ピッカーを選択時に年月ラベルの値を更新する
 const onSelectMonthPicker = (month: Dayjs): void => {
   headerLabel.value = month;
