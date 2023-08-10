@@ -7,7 +7,12 @@
       {{ headerLabel.format('YYYY年M月') }}
     </div>
 
-    <dialog id="yearMonthPicker" class="modal" ref="yearMonthPicker">
+    <dialog
+      id="yearMonthPicker"
+      class="modal"
+      v-touch:swipe.left="() => navigateMonth('next')"
+      v-touch:swipe.right="() => navigateMonth('prev')"
+    >
       <form method="dialog" class="modal-box">
         <!-- ヘッダー部分 -->
         <div class="flex justify-between">

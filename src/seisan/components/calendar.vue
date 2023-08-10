@@ -15,9 +15,7 @@
       </div>
     </div>
     <!-- カレンダーのボディ部分 -->
-    <div
-      class="grid grid-cols-7 gap-1"
-    >
+    <div class="grid grid-cols-7 gap-1">
       <span
         class="self-center justify-self-center border-stone-300 text-stone-400 text-xs pt-0.5 px-2"
         v-for="dayLabel in dayLabels"
@@ -25,7 +23,11 @@
         {{ dayLabel }}
       </span>
     </div>
-    <div class="grid grid-cols-7 gap-1">
+    <div
+      class="grid grid-cols-7 gap-1"
+      v-touch:swipe.left="() => navigateCalendar('next')"
+      v-touch:swipe.right="() => navigateCalendar('prev')"
+    >
       <div
         v-for="date in dates"
         class="flex flex-col h-12 mx-auto justify-center"
@@ -42,8 +44,8 @@
 <script setup lang="ts">
 import dayjs, { Dayjs } from 'dayjs';
 
-const touchStart = () => {
-  console.log(`タッチ開始`);
+const onSwipeLeft = (message: string) => {
+  alert(`message: ${message}`);
 }
 
 // 現在時刻をストアに格納
