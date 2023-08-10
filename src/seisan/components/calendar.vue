@@ -42,30 +42,38 @@ import { randBetween } from '../utils/randBetween';
 import dayjs from 'dayjs';
 
 // 月末の日にち
-const endDate = dayjs().endOf('month').get('date');
+const endDate = ref(dayjs().endOf('month').get('date'));
 
 // 月初の曜日
-const startWeekday = dayjs().startOf('month').get('day');
+const startWeekday = ref(dayjs().startOf('month').get('day'));
 
 // カレンダーに表示する配列を生成
 const dates = computed(() => {
   let data: string[] = [];
   // 月初までは空欄を表示
-  Array.from({ length: startWeekday }, (_, index) => data.push(''));
+  Array.from({ length: startWeekday.value }, (_, index) => data.push(''));
 
   // 当月の日付を表示
-  Array.from({ length: endDate }, (_, index) => data.push((index + 1).toString()));
+  Array.from({ length: endDate.value }, (_, index) => data.push((index + 1).toString()));
 
   return data;
 });
 
+// カレンダーに表示する曜日ラベル
 const dayLabels = ['日', '月', '火', '水', '木', '金', '土'];
 
-const navigateMonth = (direction: string) => {
+// カレンダーの戻る・進むボタンを押した回数に応じてカレンダーの表示内容を更新する
+const navigateCount = ref(1);
+const navigateMonth = (direction: string): void => {
+  const count = navigateCount.value++
   if (direction === 'prev') {
-    console.log(`前月を表示する`);
+    // 1か月前
+    endDate.value = dayjs().subtract(count, 'month').endOf('month').date();
+    startWeekday.value = dayjs().subtract(count, 'month').startOf('month').get('day');
   } else {
-    console.log(`次月を表示する`);
+    // 1か月後
+    endDate.value = dayjs().add(count, 'month').endOf('month').date();
+    startWeekday.value = dayjs().add(count, 'month').startOf('month').get('day');
   }
 }
 </script>
