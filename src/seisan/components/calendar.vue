@@ -15,7 +15,9 @@
       </div>
     </div>
     <!-- カレンダーのボディ部分 -->
-    <div class="grid grid-cols-7 gap-1">
+    <div
+      class="grid grid-cols-7 gap-1"
+    >
       <span
         class="self-center justify-self-center border-stone-300 text-stone-400 text-xs pt-0.5 px-2"
         v-for="dayLabel in dayLabels"
@@ -39,6 +41,10 @@
 
 <script setup lang="ts">
 import dayjs, { Dayjs } from 'dayjs';
+
+const touchStart = () => {
+  console.log(`タッチ開始`);
+}
 
 // 現在時刻をストアに格納
 const currentYearMonth: Ref<Dayjs> = useState('currentYearMonth', () => dayjs());
