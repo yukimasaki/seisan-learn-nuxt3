@@ -9,7 +9,11 @@
         <div class="p-1 w-full bg-stone-200 drop-shadow">詳細</div>
       </div>
 
-      <div v-for="detail in details" :key="detail.id">
+      <div
+        class="bg-stone-50"
+        v-for="detail in details"
+        :key="detail.id"
+      >
         <div class="px-8 py-1 flex justify-between border-b">
           <span class="">ID: {{ detail.id }}</span>
           <span class="">タイトル: {{ detail.title }}</span>
