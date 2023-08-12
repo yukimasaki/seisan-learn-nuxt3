@@ -31,7 +31,7 @@
         <div class="grid grid-cols-4 ">
           <button
             v-for="month in months"
-            class="btn btn-ghost self-center justify-self-center m-0"
+            class="btn btn-ghost btn-sm self-center justify-self-center m-0"
             @click="onSelectMonthPicker(month)"
           >
             {{ month.format('M') }}月
