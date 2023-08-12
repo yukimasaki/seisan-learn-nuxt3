@@ -1,6 +1,5 @@
 <template>
   <div class="bg-base-200 flex items-start justify-center">
-    <!-- 68px: ヘッダーの高さ、24px: フッターの高さをハードコーディングしている -->
     <div class="w-full bg-base-100">
       <div class="sticky top-16 z-20">
         <!-- カレンダー全体 -->
@@ -38,7 +37,7 @@ definePageMeta({
   middleware: 'auth-guard',
 });
 
-const details = Array.from({ length: 50 }, (_, index) => ({
+const details = Array.from({ length: 5 }, (_, index) => ({
   id: index + 1,
   genre: '光熱費',
   amount: randBetween(98, 19800),
