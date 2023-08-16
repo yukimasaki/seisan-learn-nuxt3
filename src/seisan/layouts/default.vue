@@ -1,7 +1,11 @@
 <template>
-  <div class="flex h-screen overflow-hidden">
+  <div class="flex h-screen">
+    <!-- サイドバー -->
     <Sidebar></Sidebar>
-    <div class="relative flex-1 flex-col overflow-y-auto overflow-x-hidden">
+
+    <!-- コンテンツエリア -->
+    <div class="flex flex-col overflow-y-auto w-full">
+      <!-- メインコンテンツヘッダー -->
       <HeaderLoggedIn></HeaderLoggedIn>
       <slot />
       <Footer></Footer>
