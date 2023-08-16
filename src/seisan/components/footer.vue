@@ -1,6 +1,6 @@
 <template>
   <div class="sticky bottom-0 z-30 p-4 tb:p-2 flex w-full drop-shadow">
-    <div class="flex flex-grow items-center justify-between ps-6 pe-6 pb-2">
+    <div class="flex flex-grow items-center justify-between px-6">
       <button
         class="btn btn-circle drop-shadow"
         @click="navigateToHome()"
