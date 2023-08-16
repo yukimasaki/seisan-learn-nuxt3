@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4">
+  <div class="flex flex-grow p-4">
     <ul class="list-disc list-inside">
       <li><NuxtLink to="/login">Login</NuxtLink></li>
       <li><NuxtLink to="/welcome">Welcome</NuxtLink></li>

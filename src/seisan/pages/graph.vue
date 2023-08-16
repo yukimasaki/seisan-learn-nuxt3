@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="flex flex-grow">
     Graph Page
   </div>
 </template>

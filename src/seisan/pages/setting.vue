@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="flex flex-grow">
     Setting Page
   </div>
 </template>
