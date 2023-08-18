@@ -13,7 +13,6 @@
           </button>
         </div>
       </div>
-      <div>{{ details.length }}</div>
     </div>
     <!-- カレンダーのボディ部分 -->
     <div class="grid grid-cols-7 gap-1">
@@ -47,10 +46,17 @@ import dayjs, { Dayjs } from 'dayjs';
 import { Detail } from '../types/detail';
 import { Summary } from '../types/summary';
 
+// detailsをストアから取得
+const details: Ref<Detail[]> = useState('details');
+
 // 現在時刻をストアに格納
 const currentYearMonth: Ref<Dayjs> = useState('currentYearMonth', () => dayjs());
 
-// 月末の日にち
+
+// 月初の日付
+const startDate: Dayjs = currentYearMonth.value.startOf('month');
+
+  // 月末の日付
 const endDate: Ref<number> = ref(currentYearMonth.value.endOf('month').get('date'));
 
 // 月初の曜日
@@ -64,22 +70,49 @@ const summaries: ComputedRef<Summary[]> = computed(() => {
     return {
       id: incrementalNumber,
       label: '',
+      date: '',
       amount: 0,
     }
   });
 
   // 当月のデータを生成
+  const amountsPerDay = reduceAmounts(details);
   const currentMonth = Array.from({ length: endDate.value }, (_, index) => {
     const incrementalNumber = index + 1
+    const date = dayjs(startDate).add(index, 'day').format('YYYY/MM/DD');
     return {
       id: blank.length + incrementalNumber,
       label: incrementalNumber.toString(),
-      amount: 777,
+      date,
+      amount: amountsPerDay.value.get(date) || 0,
     }
   });
 
   // blankとcurrentMonthを1つの配列に結合
   return [...blank, ...currentMonth];
+});
+
+const reduceAmounts = (
+  details: Ref<Detail[]>
+): ComputedRef<Map<string, number>> => computed(() => {
+  console.log(details.value.length);
+
+  const summaryMap = new Map();
+
+  details.value.forEach(detail => {
+    const paymentDateStr = detail.paymentDate.format('YYYY/MM/DD');
+    const amount = detail.amount;
+
+    if (summaryMap.has(paymentDateStr)) {
+      // Map内に既に存在する日付の場合、金額を加算
+      summaryMap.set(paymentDateStr, summaryMap.get(paymentDateStr) + amount);
+    } else {
+      // Map内に存在しない日付の場合、金額を初期化
+      summaryMap.set(paymentDateStr, amount);
+    }
+  });
+
+  return summaryMap;
 });
 
 // カレンダーに表示する曜日ラベル
@@ -103,7 +136,4 @@ watch(currentYearMonth, (next, prev) => {
   endDate.value = next.endOf('month').get('date');
   startWeekday.value = next.startOf('month').get('day');
 });
-
-const details: Ref<Detail[]> = useState('details');
-
 </script>
