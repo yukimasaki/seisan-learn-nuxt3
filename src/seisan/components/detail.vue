@@ -41,12 +41,17 @@ const paymentMethod = [
   '均等',
 ];
 
-const details = Array.from({ length: 50 }, (_, index) => ({
+const details = reactive(Array.from({ length: 50 }, (_, index) => ({
   id: index + 1,
   genre: genre[randBetween(0, genre.length - 1)],
   amount: randBetween(98, 19800).toLocaleString(),
   paymentMethod: paymentMethod[randBetween(0, paymentMethod.length - 1)],
   paymentDate: dayjs(`2023-08-${randBetween(1, 31)}`),
   memo: genre[randBetween(0, genre.length - 1)],
-}));
+  paidStatus: randBetween(0, 1) ? true : false,
+  createdAt: dayjs(`2023-08-${randBetween(1, 31)}`),
+})));
+
+// detailsを降順にソート
+details.sort((a, b) => b.createdAt.unix() - a.createdAt.unix());
 </script>
