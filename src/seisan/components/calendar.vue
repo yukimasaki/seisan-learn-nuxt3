@@ -44,10 +44,6 @@
 <script setup lang="ts">
 import dayjs, { Dayjs } from 'dayjs';
 
-const onSwipeLeft = (message: string) => {
-  alert(`message: ${message}`);
-}
-
 // 現在時刻をストアに格納
 const currentYearMonth: Ref<Dayjs> = useState('currentYearMonth', () => dayjs());
 
