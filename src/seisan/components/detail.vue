@@ -7,7 +7,7 @@
     <div class="px-4 py-1 border-b">
       <div class="flex justify-between font-semibold">
         <span>{{ detail.genre }}</span>
-        <span>{{ detail.amount }}円</span>
+        <span>{{ detail.amount.toLocaleString() }}円</span>
       </div>
       <div>
         <span class="px-1 text-sm badge bg-green-600 text-green-50">{{ detail.paymentMethod }}</span>
