@@ -10,8 +10,11 @@
 </template>
 
 <script setup lang="ts">
+import { fetchDetail } from '../composables/fetchDetail';
+
 definePageMeta({
   middleware: 'auth-guard',
 });
 
+fetchDetail();
 </script>
