@@ -37,10 +37,10 @@ const add = () => {
     genre: '分類不能',
     amount: 9999,
     paymentMethod: '金額指定',
-    paymentDate: dayjs(`2023-09-01`),
+    paymentDate: dayjs(`2023-08-31`),
     memo: 'added',
     paidStatus: false,
-    createdAt: dayjs(`2023-09-01`),
+    createdAt: dayjs(`2023-08-31`),
   }
 
   const details: Ref<Detail[]> = useState('details');
