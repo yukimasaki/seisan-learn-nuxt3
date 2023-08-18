@@ -13,6 +13,7 @@
           </button>
         </div>
       </div>
+      <div>{{ details.length }}</div>
     </div>
     <!-- カレンダーのボディ部分 -->
     <div class="grid grid-cols-7 gap-1">
@@ -29,12 +30,12 @@
       v-touch:swipe.right="() => navigateCalendar('prev')"
     >
       <div
-        v-for="date in dates"
+        v-for="summary in summaries"
         class="flex flex-col h-12 mx-auto justify-center"
       >
-        <div class="top h-5 w-full text-sm text-center">{{ date }}</div>
+        <div class="top h-5 w-full text-sm text-center">{{ summary.label }}</div>
         <div class="bottom flex-grow h-7 py-1 w-full cursor-pointer text-center">
-          <div class="text-xs">7,777</div>
+          <div v-if="summary.amount > 0" class="text-xs">{{ summary.amount.toLocaleString() }}</div>
         </div>
       </div>
     </div>
@@ -43,6 +44,8 @@
 
 <script setup lang="ts">
 import dayjs, { Dayjs } from 'dayjs';
+import { Detail } from '../types/detail';
+import { Summary } from '../types/summary';
 
 // 現在時刻をストアに格納
 const currentYearMonth: Ref<Dayjs> = useState('currentYearMonth', () => dayjs());
@@ -54,15 +57,29 @@ const endDate: Ref<number> = ref(currentYearMonth.value.endOf('month').get('date
 const startWeekday: Ref<number> = ref(currentYearMonth.value.startOf('month').get('day'));
 
 // カレンダーに表示する配列を生成
-const dates: ComputedRef<string[]> = computed(() => {
-  let data: string[] = [];
-  // 月初までは空欄を表示
-  Array.from({ length: startWeekday.value }, (_, index) => data.push(''));
+const summaries: ComputedRef<Summary[]> = computed(() => {
+  // 月初までは全てのプロパティに空欄を格納
+  const blank = Array.from({ length: startWeekday.value }, (_, index) => {
+    const incrementalNumber = index + 1
+    return {
+      id: incrementalNumber,
+      label: '',
+      amount: 0,
+    }
+  });
 
-  // 当月の日付を表示
-  Array.from({ length: endDate.value }, (_, index) => data.push((index + 1).toString()));
+  // 当月のデータを生成
+  const currentMonth = Array.from({ length: endDate.value }, (_, index) => {
+    const incrementalNumber = index + 1
+    return {
+      id: blank.length + incrementalNumber,
+      label: incrementalNumber.toString(),
+      amount: 777,
+    }
+  });
 
-  return data;
+  // blankとcurrentMonthを1つの配列に結合
+  return [...blank, ...currentMonth];
 });
 
 // カレンダーに表示する曜日ラベル
@@ -86,4 +103,7 @@ watch(currentYearMonth, (next, prev) => {
   endDate.value = next.endOf('month').get('date');
   startWeekday.value = next.startOf('month').get('day');
 });
+
+const details: Ref<Detail[]> = useState('details');
+
 </script>
