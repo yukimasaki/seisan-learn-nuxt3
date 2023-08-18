@@ -16,5 +16,6 @@ definePageMeta({
   middleware: 'auth-guard',
 });
 
+// detailsを取得、ストアへ格納
 fetchDetail();
 </script>
