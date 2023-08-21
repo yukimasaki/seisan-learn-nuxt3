@@ -29,7 +29,7 @@ const navigateToHome = () => {
 const add = () => {
   const detail: Detail = {
     id: 51,
-    genre: '分類不能',
+    categories: '分類不能',
     amount: 9999,
     paymentMethod: '金額指定',
     paymentDate: dayjs(`2023-08-31`),

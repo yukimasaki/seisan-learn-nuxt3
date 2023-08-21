@@ -1,6 +1,6 @@
 export type Detail = {
   id: number,
-  genre: string,
+  categories: string,
   amount: number,
   paymentMethod: string,
   paymentDate: Dayjs,

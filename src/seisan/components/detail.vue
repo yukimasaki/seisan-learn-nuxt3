@@ -6,7 +6,7 @@
   >
     <div class="px-4 py-1 border-b">
       <div class="flex justify-between font-semibold">
-        <span>{{ detail.genre }}</span>
+        <span>{{ detail.categories }}</span>
         <span>{{ detail.amount.toLocaleString() }}円</span>
       </div>
       <div>
