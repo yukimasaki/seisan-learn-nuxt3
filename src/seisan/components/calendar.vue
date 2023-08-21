@@ -32,7 +32,12 @@
         v-for="summary in summaries"
         class="flex flex-col h-12 mx-auto justify-center"
       >
-        <div class="top h-5 w-full text-sm text-center">{{ summary.label }}</div>
+        <div
+          class="top h-5 w-full text-sm text-center"
+          :class="isToday(summary.date) && 'text-red-400'"
+        >
+          {{ summary.label }}
+        </div>
         <div class="bottom flex-grow h-7 py-1 w-full cursor-pointer text-center">
           <div v-if="summary.amount > 0" class="text-xs">{{ summary.amount.toLocaleString() }}</div>
         </div>
@@ -136,4 +141,8 @@ watch(currentYearMonth, (next, prev) => {
   endDate.value = next.endOf('month').get('date');
   startWeekday.value = next.startOf('month').get('day');
 });
+
+const isToday = (date: string): boolean => {
+  return date === dayjs().format('YYYY/MM/DD');
+}
 </script>
