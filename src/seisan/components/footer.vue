@@ -7,12 +7,7 @@
       >
         <IconBaselineHome></IconBaselineHome>
       </button>
-      <button
-        class="btn btn-circle drop-shadow"
-        @click="add()"
-      >
-        <IconPencil></IconPencil>
-      </button>
+      <ItemDialog></ItemDialog>
       <button
         class="btn btn-circle drop-shadow"
         @click="navigateToList()"
