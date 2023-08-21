@@ -51,10 +51,25 @@
           <div class="flex justify-between my-2">
             <label class="my-auto">割り勘方法</label>
             <div class="join my-auto">
-              <input type="radio" class="join-item btn btn-xs" name="options" aria-label="均等">
-              <input type="radio" class="join-item btn btn-xs" name="options" aria-label="比率">
-              <input type="radio" class="join-item btn btn-xs" name="options" aria-label="金額">
-              <input type="radio" class="join-item btn btn-xs" name="options" aria-label="なし">
+              <input type="radio" class="join-item btn btn-sm" name="options" aria-label="均等" value="equal" v-model="selectedButton">
+              <input type="radio" class="join-item btn btn-sm" name="options" aria-label="比率" value="ratio" v-model="selectedButton">
+              <input type="radio" class="join-item btn btn-sm" name="options" aria-label="金額" value="specifiedAmount" v-model="selectedButton">
+              <input type="radio" class="join-item btn btn-sm" name="options" aria-label="なし" value="none" v-model="selectedButton">
+            </div>
+          </div>
+          <div
+            class="flex justify-between mb-2"
+            v-if="selectedButton && selectedButton !== 'none'"
+            v-for="member in members"
+            :key="member.id"
+          >
+            <span>{{ member.name }}</span>
+            <div>
+              <input
+                type="number"
+                class="input input-bordered focus:outline-none bg-stone-50 w-16 input-sm"
+              >
+              <span class="pl-1">{{ unit }}</span>
             </div>
           </div>
         </div>
@@ -75,4 +90,34 @@
 </template>
 
 <script setup lang="ts">
+const selectedButton = ref(null);
+
+const unit = computed(() => {
+    if (
+      selectedButton.value === 'equal' ||
+      selectedButton.value === 'ratio'
+    ) {
+      return '%'
+    } else {
+      return '円'
+    }
+});
+
+const members = [
+  {
+    id: 1,
+    name: 'member 1',
+    email: 'member1@example.com',
+  },
+  {
+    id: 2,
+    name: 'member 2',
+    email: 'member2@example.com',
+  },
+  {
+    id: 3,
+    name: 'member 3',
+    email: 'member3@example.com',
+  },
+];
 </script>
