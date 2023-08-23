@@ -2,16 +2,16 @@
   <div>
     <button
       class="btn btn-circle drop-shadow"
-      onclick="itemDialog.showModal()"
+      @click="itemDialog.showModal()"
     >
       <IconPencil></IconPencil>
     </button>
 
     <dialog
-      id="itemDialog"
+      ref="itemDialog"
       class="modal"
     >
-      <form method="dialog" class="modal-box">
+      <form method="dialog" class="modal-box w-full h-screen rounded-none">
         <!-- ヘッダー部分 -->
         <div class="flex justify-between items-center mb-4">
           <h2 class="text-lg font-semibold">
@@ -52,20 +52,23 @@
           />
 
           <label class="my-2">メモ</label>
-          <textarea class="textarea textarea-bordered w-full focus:outline-none bg-stone-50" />
+          <textarea
+            v-model="memo"
+            class="textarea textarea-bordered w-full focus:outline-none bg-stone-50"
+          />
 
           <div class="flex justify-between my-2">
             <label class="my-auto">割り勘方法</label>
             <div class="join my-auto">
-              <input type="radio" class="join-item btn btn-sm" name="options" aria-label="均等" value="equal" v-model="selectedButton">
-              <input type="radio" class="join-item btn btn-sm" name="options" aria-label="比率" value="ratio" v-model="selectedButton">
-              <input type="radio" class="join-item btn btn-sm" name="options" aria-label="金額" value="specifiedAmount" v-model="selectedButton">
-              <input type="radio" class="join-item btn btn-sm" name="options" aria-label="なし" value="none" v-model="selectedButton">
+              <input type="radio" class="join-item btn btn-sm" aria-label="均等" value="均等" v-model="paymentMethod">
+              <input type="radio" class="join-item btn btn-sm" aria-label="比率" value="比率" v-model="paymentMethod" checked>
+              <input type="radio" class="join-item btn btn-sm" aria-label="金額" value="金額" v-model="paymentMethod">
+              <input type="radio" class="join-item btn btn-sm" aria-label="なし" value="なし" v-model="paymentMethod">
             </div>
           </div>
           <div
             class="flex justify-between mb-2"
-            v-if="selectedButton && selectedButton !== 'none'"
+            v-if="paymentMethod && paymentMethod !== 'なし'"
             v-for="member in members"
             :key="member.id"
           >
@@ -88,13 +91,20 @@
 
           <button
             class="btn w-1/2 drop-shadow"
-            :disabled="!meta.valid || isSubmitting"
+            :disabled="!meta.valid"
             @click="submit()"
           >
             作成
           </button>
         </div>
       </form>
+    </dialog>
+
+    <dialog
+      ref="loadingDialog"
+      class="modal"
+    >
+      <span class="loading loading-spinner loading-lg"></span>
     </dialog>
   </div>
 </template>
@@ -105,11 +115,16 @@ import { toTypedSchema } from '@vee-validate/zod';
 import { z } from 'zod';
 import dayjs from 'dayjs';
 
+const itemDialog = ref();
+const loadingDialog = ref();
+
 const schema = toTypedSchema(
   z.object({
     amount: z.number().positive(),
     category: z.string().nonempty(),
     paymentDate: z.string().nonempty(),
+    memo: z.string().min(0),
+    paymentMethod: z.string(),
   })
 );
 
@@ -124,18 +139,31 @@ const { value: category } = useField('category', undefined, {
 const { value: paymentDate } = useField('paymentDate', undefined, {
   initialValue: dayjs().format('YYYY-MM-DD'),
 });
+const { value: memo } = useField('memo', undefined, {
+  initialValue: '',
+});
+const { value: paymentMethod } = useField('paymentMethod', undefined, {
+  initialValue: 'ratio',
+});
 
 const submit = handleSubmit(async (values) => {
+  itemDialog.value.close();
   await new Promise((resolve) => setTimeout(resolve, 3000));
   console.log(values);
 });
 
-const selectedButton = ref(null);
+watch(isSubmitting, () => {
+  if (isSubmitting.value) {
+    loadingDialog.value.showModal();
+  } else {
+    loadingDialog.value.close();
+  }
+});
 
 const unit = computed(() => {
     if (
-      selectedButton.value === 'equal' ||
-      selectedButton.value === 'ratio'
+      paymentMethod.value === '均等' ||
+      paymentMethod.value === '比率'
     ) {
       return '%'
     } else {
