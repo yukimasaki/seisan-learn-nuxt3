@@ -20,6 +20,7 @@
   "dependencies": {
     "@vee-validate/i18n": "^4.11.2",
     "@vee-validate/rules": "^4.11.2",
+    "@vee-validate/zod": "^4.11.3",
     "@vite-pwa/nuxt": "^0.1.0",
     "dayjs": "^1.11.9",
     "vee-validate": "^4.11.2",
