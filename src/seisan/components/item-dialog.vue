@@ -27,13 +27,18 @@
         <div class="flex flex-col">
           <label class="my-2">金額</label>
           <input
+            v-model="amount"
             type="number"
             placeholder="1980"
             class="input input-bordered w-full focus:outline-none bg-stone-50"
           />
+          <span v-if="errors.amount" class="text-error text-sm">{{ errors.amount }}</span>
 
           <label class="my-2">カテゴリ</label>
-          <select class="select select-bordered w-full focus:outline-none bg-stone-50">
+          <select
+            v-model="category"
+            class="select select-bordered w-full focus:outline-none bg-stone-50"
+          >
             <option value="1">One</option>
             <option value="2">Two</option>
             <option value="3">Three</option>
@@ -41,6 +46,7 @@
 
           <label class="my-2">日付</label>
           <input
+            v-model="paymentDate"
             type="date"
             class="input input-bordered w-full focus:outline-none bg-stone-50"
           />
@@ -80,7 +86,11 @@
             キャンセル
           </button>
 
-          <button class="btn w-1/2 btn-disabled drop-shadow">
+          <button
+            class="btn w-1/2 drop-shadow"
+            :disabled="!meta.valid || isSubmitting"
+            @click="submit()"
+          >
             作成
           </button>
         </div>
@@ -90,6 +100,36 @@
 </template>
 
 <script setup lang="ts">
+import { useField, useForm } from 'vee-validate';
+import { toTypedSchema } from '@vee-validate/zod';
+import { z } from 'zod';
+import dayjs from 'dayjs';
+
+const schema = toTypedSchema(
+  z.object({
+    amount: z.number().positive(),
+    category: z.string().nonempty(),
+    paymentDate: z.string().nonempty(),
+  })
+);
+
+const { errors, meta, handleSubmit, isSubmitting } = useForm({
+  validationSchema: schema,
+});
+
+const { value: amount } = useField('amount');
+const { value: category } = useField('category', undefined, {
+  initialValue: '1',
+});
+const { value: paymentDate } = useField('paymentDate', undefined, {
+  initialValue: dayjs().format('YYYY-MM-DD'),
+});
+
+const submit = handleSubmit(async (values) => {
+  await new Promise((resolve) => setTimeout(resolve, 3000));
+  console.log(values);
+});
+
 const selectedButton = ref(null);
 
 const unit = computed(() => {
