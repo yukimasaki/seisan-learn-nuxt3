@@ -952,6 +952,13 @@
   dependencies:
     regenerator-runtime "^0.13.11"
 
+"@babel/runtime@^7.22.5":
+  version "7.22.10"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.22.10.tgz#ae3e9631fd947cb7e3610d3e9d8fef5f76696682"
+  integrity sha512-21t/fkKLMZI4pqP2wlmsQAWnYW1PDyKyyUV4vCi+B25ydmdaYTKXPwCj0BzSUnZf4seIiYvSA3jcZ3gdsMFkLQ==
+  dependencies:
+    regenerator-runtime "^0.14.0"
+
 "@babel/standalone@^7.22.9":
   version "7.22.9"
   resolved "https://registry.yarnpkg.com/@babel/standalone/-/standalone-7.22.9.tgz#8ac034a30867dc50ff5a7904d771832edcd7a192"
@@ -4149,6 +4156,13 @@ humanize-ms@^1.2.1:
   dependencies:
     ms "^2.0.0"
 
+i18next@^23.4.5:
+  version "23.4.5"
+  resolved "https://registry.yarnpkg.com/i18next/-/i18next-23.4.5.tgz#3405926b7cd4a4682d6521633e9f836b3d81c5e7"
+  integrity sha512-XXALnva7/5H+kg7TjDsmzY3jRypuSJvjR1eUWtt11yUgsOqjZFq/mnaujJ/XpVWhUJU75QhCUhrZqAarlYpOSQ==
+  dependencies:
+    "@babel/runtime" "^7.22.5"
+
 iconv-lite@^0.6.2:
   version "0.6.3"
   resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.6.3.tgz#a52f80bf38da1952eb5c681790719871a1a72501"
@@ -6154,6 +6168,11 @@ regenerator-runtime@^0.13.11:
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.13.11.tgz#f6dca3e7ceec20590d07ada785636a90cdca17f9"
   integrity sha512-kY1AZVr2Ra+t+piVaJ4gxaFaReZVH40AKNo7UCX6W+dEwBo/2oZJzqfuN1qLq1oL45o56cPaTXELwrTh8Fpggg==
 
+regenerator-runtime@^0.14.0:
+  version "0.14.0"
+  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.14.0.tgz#5e19d68eb12d486f797e15a3c6a918f7cec5eb45"
+  integrity sha512-srw17NI0TUWHuGa5CFGGmhfNIeja30WMBfbslPNhf6JrqQlLN5gcrvig1oqPxiVaXb0oW0XRKtH6Nngs5lKCIA==
+
 regenerator-transform@^0.15.1:
   version "0.15.1"
   resolved "https://registry.yarnpkg.com/regenerator-transform/-/regenerator-transform-0.15.1.tgz#f6c4e99fc1b4591f780db2586328e4d9a9d8dc56"
@@ -7840,6 +7859,11 @@ zip-stream@^4.1.0:
     archiver-utils "^2.1.0"
     compress-commons "^4.1.0"
     readable-stream "^3.6.0"
+
+zod-i18n-map@^2.15.0:
+  version "2.15.0"
+  resolved "https://registry.yarnpkg.com/zod-i18n-map/-/zod-i18n-map-2.15.0.tgz#24a4548f8ef14bee12f82730790ad4ca9e463433"
+  integrity sha512-XHaG1VpQhOg4KLiiVIkBVatRUUPW3pu9CxcskMJFVu6PaSkmfV42pzoK9Yc7MxbpdyUiZZoEVN6DOEnUfj7fyg==
 
 zod@^3.22.2:
   version "3.22.2"
