@@ -17,5 +17,5 @@ definePageMeta({
 });
 
 // detailsを取得、ストアへ格納
-fetchDetail();
+await fetchDetail();
 </script>
