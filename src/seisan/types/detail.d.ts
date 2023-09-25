@@ -1,10 +1,12 @@
 export type Detail = {
   id: number,
-  categories: string,
+  creatorId: number,
+  editorId: number,
   amount: number,
-  paymentMethod: string,
-  paymentDate: Dayjs,
+  paymentDate: Date,
+  title: string,
   memo: string,
-  paidStatus: boolean,
-  createdAt: Dayjs,
+  status: string,
+  categoryId: number,
+  groupId: number,
 }
