@@ -105,7 +105,7 @@ const reduceAmounts = (
   const summaryMap = new Map();
 
   details.value.forEach(detail => {
-    const paymentDateStr = detail.paymentDate.format('YYYY/MM/DD');
+    const paymentDateStr = dayjs(detail.paymentDate).format('YYYY/MM/DD');
     const amount = detail.amount;
 
     if (summaryMap.has(paymentDateStr)) {
