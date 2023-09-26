@@ -4,17 +4,17 @@
     v-for="detail in details"
     :key="detail.id"
   >
-    <!-- <div class="px-4 py-1 border-b"> -->
-      <!-- <div class="flex justify-between font-semibold">
-        <span>{{ detail.categories }}</span>
+    <div class="px-4 py-1 border-b">
+      <div class="flex justify-between font-semibold">
+        <span>{{ detail.category.category }}</span>
         <span>{{ detail.amount.toLocaleString() }}円</span>
       </div>
       <div>
-        <span class="px-1 text-sm badge bg-green-600 text-green-50">{{ detail.paymentMethod }}</span>
-        <span class="px-1 text-sm">{{ detail.paymentDate.format('YYYY/MM/DD') }}</span>
+        <span class="px-1 text-sm badge bg-green-600 text-green-50">method</span>
+        <span class="px-1 text-sm">{{ detail.paymentDate }}</span>
         <span class="px-1 text-sm">{{ detail.memo }}</span>
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -23,7 +23,6 @@ import { Detail } from '../types/detail';
 
 // ストアに格納されたデータを取得してくる
 const details: Ref<Detail[]> = useState('details');
-console.log(details.value);
 
 // detailsを降順にソート
 </script>
