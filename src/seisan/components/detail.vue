@@ -22,6 +22,7 @@
 import { Detail } from '../types/detail';
 
 // ストアに格納されたデータを取得してくる
+// todo: ComputedRef型のデータならリアクティブに画面に反映される？
 const details: Ref<Detail[]> = useState('details');
 
 // detailsを降順にソート
