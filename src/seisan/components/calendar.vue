@@ -100,7 +100,6 @@ const summaries: ComputedRef<Summary[]> = computed(() => {
 const reduceAmounts = (
   details: Ref<Detail[]>
 ): ComputedRef<Map<string, number>> => computed(() => {
-  console.log(details.value.length);
 
   const summaryMap = new Map();
 
@@ -132,6 +131,7 @@ const navigateCalendar = async (direction: string): Promise<void> => {
   } else {
     month = dayjs(currentYearMonth.value).add(1, 'month');
   }
+
   const start = dayjs(month).startOf('month').format('YYYY-MM-DD');
   const end = dayjs(month).endOf('month').format('YYYY-MM-DD');
   await fetchDetail(start, end);
