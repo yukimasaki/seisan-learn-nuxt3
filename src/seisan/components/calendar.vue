@@ -123,7 +123,8 @@ const reduceAmounts = (
 // カレンダーに表示する曜日ラベル
 const dayLabels = ['日', '月', '火', '水', '木', '金', '土'];
 
-// カレンダーの戻る・進むボタンが押されるとカレンダーの表示内容を更新する
+// カレンダーの戻る・進むボタンが押されるとカレンダーの日付の並びを更新する
+// todo: storeに格納するdetailsの内容も更新する必要がある
 const navigateCalendar = (direction: string): void => {
   let month: Dayjs;
   if (direction === 'prev') {
