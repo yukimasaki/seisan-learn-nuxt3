@@ -8,5 +8,11 @@ export type Detail = {
   memo: string,
   status: string,
   categoryId: number,
+  category: {
+    id: number,
+    category: string,
+    icon: string,
+    groupId: number,
+  },
   groupId: number,
 }
