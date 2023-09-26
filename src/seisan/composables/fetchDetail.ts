@@ -6,8 +6,11 @@ export const fetchDetail = async (
   end: string = dayjs().endOf('month').format('YYYY-MM-DD'),
 ) => {
   const apiUrl = `http://seisan.local:3001`;
-  const { data }: { data: globalThis.Ref<Detail[]> } = await useFetch(`${apiUrl}/transaction?${start}&${end}`);
+  const { data }: { data: globalThis.Ref<Detail[]> } = await useFetch(`${apiUrl}/transaction?start=${start}&end=${end}`);
   const details = data;
+
+  console.log(`${apiUrl}/transaction?start=${start}&end=${end}`);
+  console.log(details.value.length);
 
   // 取得したデータをストアに格納する
   useState('details', () => details);
