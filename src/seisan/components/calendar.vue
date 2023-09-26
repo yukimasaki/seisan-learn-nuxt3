@@ -125,13 +125,17 @@ const dayLabels = ['日', '月', '火', '水', '木', '金', '土'];
 
 // カレンダーの戻る・進むボタンが押されるとカレンダーの日付の並びを更新する
 // todo: storeに格納するdetailsの内容も更新する必要がある
-const navigateCalendar = (direction: string): void => {
+const navigateCalendar = async (direction: string): Promise<void> => {
   let month: Dayjs;
   if (direction === 'prev') {
     month = dayjs(currentYearMonth.value).subtract(1, 'month');
   } else {
     month = dayjs(currentYearMonth.value).add(1, 'month');
   }
+  const start = dayjs(month).startOf('month').format('YYYY-MM-DD');
+  const end = dayjs(month).endOf('month').format('YYYY-MM-DD');
+  await fetchDetail(start, end);
+
   endDate.value = month.endOf('month').get('date');
   startWeekday.value = month.startOf('month').get('day');
   currentYearMonth.value = month;
