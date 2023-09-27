@@ -10,12 +10,12 @@
 </template>
 
 <script setup lang="ts">
-import { fetchDetail } from '../composables/fetchDetail';
+import { fetchTransaction } from '../composables/fetchTransaction';
 
 definePageMeta({
   middleware: 'auth-guard',
 });
 
-// detailsを取得、ストアへ格納
-await fetchDetail();
+// transactionsを取得、ストアへ格納
+await fetchTransaction();
 </script>

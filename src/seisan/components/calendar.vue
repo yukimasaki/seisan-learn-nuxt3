@@ -48,11 +48,12 @@
 
 <script setup lang="ts">
 import dayjs, { Dayjs } from 'dayjs';
-import { Detail } from '../types/detail';
+import { Transaction } from '../types/transaction';
 import { Summary } from '../types/summary';
+import { fetchTransaction } from '../composables/fetchTransaction';
 
-// detailsをストアから取得
-// const details: Ref<Detail[]> = useState('details');
+// transactionsをストアから取得
+// const transactions: Ref<Transaction[]> = useState('transactions');
 
 // 現在時刻をストアに格納
 const currentYearMonth: Ref<Dayjs> = useState('currentYearMonth', () => dayjs());
@@ -81,7 +82,7 @@ const summaries: ComputedRef<Summary[]> = computed(() => {
   });
 
   // 当月のデータを生成
-  const amountsPerDay = reduceAmounts(details);
+  const amountsPerDay = reduceAmounts(transactions);
   const currentMonth = Array.from({ length: endDate.value }, (_, index) => {
     const incrementalNumber = index + 1
     const date = dayjs(startDate).add(index, 'day').format('YYYY/MM/DD');
@@ -98,14 +99,14 @@ const summaries: ComputedRef<Summary[]> = computed(() => {
 });
 
 const reduceAmounts = (
-  details: Ref<Detail[]>
+  transactions: Ref<Transaction[]>
 ): ComputedRef<Map<string, number>> => computed(() => {
 
   const summaryMap = new Map();
 
-  details.value.forEach(detail => {
-    const paymentDateStr = dayjs(detail.paymentDate).format('YYYY/MM/DD');
-    const amount = detail.amount;
+  transactions.value.forEach(transaction => {
+    const paymentDateStr = dayjs(transaction.paymentDate).format('YYYY/MM/DD');
+    const amount = transaction.amount;
 
     if (summaryMap.has(paymentDateStr)) {
       // Map内に既に存在する日付の場合、金額を加算
@@ -133,7 +134,7 @@ const navigateCalendar = async (direction: string): Promise<void> => {
 
   const start = dayjs(month).startOf('month').format('YYYY-MM-DD');
   const end = dayjs(month).endOf('month').format('YYYY-MM-DD');
-  await fetchDetail(start, end);
+  await fetchTransaction(start, end);
 
   endDate.value = month.endOf('month').get('date');
   startWeekday.value = month.startOf('month').get('day');

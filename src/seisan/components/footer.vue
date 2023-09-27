@@ -20,14 +20,14 @@
 
 <script setup lang="ts">
 import dayjs from 'dayjs';
-import { Detail } from '../types/detail';
+import { Transaction } from '../types/transaction';
 
 const navigateToHome = () => {
   return navigateTo('/');
 }
 
 const add = () => {
-  const detail: Detail = {
+  const transaction: Transaction = {
     id: 51,
     categories: '分類不能',
     amount: 9999,
@@ -38,9 +38,9 @@ const add = () => {
     createdAt: dayjs(`2023-08-31`),
   }
 
-  const details: Ref<Detail[]> = useState('details');
-  details.value.push(detail);
-  details.value.sort((a, b) => b.createdAt.unix() - a.createdAt.unix());
+  const transactions: Ref<Transaction[]> = useState('transactions');
+  transactions.value.push(transaction);
+  transactions.value.sort((a, b) => b.createdAt.unix() - a.createdAt.unix());
 }
 
 const navigateToList = () => {
