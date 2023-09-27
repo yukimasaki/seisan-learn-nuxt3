@@ -10,7 +10,7 @@ class TransactionStore {
     this._state = useState('transaction', () => null);
   }
 
-  get state() {
+  get state(): Readonly<Ref<Readonly<Transaction[]> | null>> {
     return readonly(this._state);
   }
 
