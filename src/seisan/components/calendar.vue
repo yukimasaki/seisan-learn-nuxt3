@@ -52,8 +52,7 @@ import { Detail } from '../types/detail';
 import { Summary } from '../types/summary';
 
 // detailsをストアから取得
-// todo: ComputedRef型のデータならリアクティブに画面に反映される？
-const details: Ref<Detail[]> = reactive(useState('details'));
+// const details: Ref<Detail[]> = useState('details');
 
 // 現在時刻をストアに格納
 const currentYearMonth: Ref<Dayjs> = useState('currentYearMonth', () => dayjs());
