@@ -6,7 +6,7 @@ export const fetchDetail = async (
   end: string = dayjs().endOf('month').format('YYYY-MM-DD'),
 ) => {
   const apiUrl = `http://seisan.local:3001`;
-  const { data }: { data: globalThis.Ref<Detail[]> } = await useFetch(`${apiUrl}/transaction?start=${start}&end=${end}`);
+  const { data }: { data: Ref<Detail[]> } = await useFetch(`${apiUrl}/transaction?start=${start}&end=${end}`);
   const details = data;
 
   console.log(`${apiUrl}/transaction?start=${start}&end=${end}`);
