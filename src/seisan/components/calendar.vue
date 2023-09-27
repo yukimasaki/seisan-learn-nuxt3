@@ -51,9 +51,11 @@ import dayjs, { Dayjs } from 'dayjs';
 import { Transaction } from '../types/transaction';
 import { Summary } from '../types/summary';
 import { fetchTransaction } from '../composables/fetchTransaction';
+import { useTransactionStore } from '../store/useTransactionStore';
 
 // transactionsをストアから取得
-// const transactions: Ref<Transaction[]> = useState('transactions');
+const transactionStore = useTransactionStore();
+const { state: transactions } = transactionStore;
 
 // 現在時刻をストアに格納
 const currentYearMonth: Ref<Dayjs> = useState('currentYearMonth', () => dayjs());
