@@ -92,7 +92,8 @@ const summaries: ComputedRef<Summary[]> = computed(() => {
       id: blank.length + incrementalNumber,
       label: incrementalNumber.toString(),
       date,
-      amount: amountsPerDay.value.get(date) || 0,
+      // todo: getがundefinedになってしまう
+      amount: amountsPerDay.value ? amountsPerDay.value.get(date) : 0,
     }
   });
 
@@ -101,11 +102,10 @@ const summaries: ComputedRef<Summary[]> = computed(() => {
 });
 
 const reduceAmounts = (
-  transactions: Ref<Transaction[]>
-): ComputedRef<Map<string, number>> => computed(() => {
-
+  transactions: Readonly<Ref<Readonly<Transaction[]> | null>>
+): ComputedRef<Map<string, number> | false> => computed(() => {
+  if (!transactions || !transactions.value) return false;
   const summaryMap = new Map();
-
   transactions.value.forEach(transaction => {
     const paymentDateStr = dayjs(transaction.paymentDate).format('YYYY/MM/DD');
     const amount = transaction.amount;
