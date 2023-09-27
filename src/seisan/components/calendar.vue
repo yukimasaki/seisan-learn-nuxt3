@@ -53,7 +53,7 @@ import { Summary } from '../types/summary';
 
 // detailsをストアから取得
 // todo: ComputedRef型のデータならリアクティブに画面に反映される？
-const details: Ref<Detail[]> = useState('details');
+const details: Ref<Detail[]> = reactive(useState('details'));
 
 // 現在時刻をストアに格納
 const currentYearMonth: Ref<Dayjs> = useState('currentYearMonth', () => dayjs());
@@ -124,7 +124,6 @@ const reduceAmounts = (
 const dayLabels = ['日', '月', '火', '水', '木', '金', '土'];
 
 // カレンダーの戻る・進むボタンが押されるとカレンダーの日付の並びを更新する
-// todo: storeに格納するdetailsの内容も更新する必要がある
 const navigateCalendar = async (direction: string): Promise<void> => {
   let month: Dayjs;
   if (direction === 'prev') {
