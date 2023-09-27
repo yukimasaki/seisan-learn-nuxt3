@@ -19,6 +19,9 @@
 </template>
 
 <script setup lang="ts">
+import { useTransactionStore } from '../store/useTransactionStore';
+
 // ストアに格納されたデータを取得してくる
-// const transactions: Ref<Transaction[]> = useState('transactions');
+const transactionStore = useTransactionStore();
+const { state: transactions } = transactionStore;
 </script>
