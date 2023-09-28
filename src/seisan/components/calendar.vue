@@ -1,8 +1,5 @@
 <template>
   <div class="card bg-stone-50 drop-shadow rounded-none">
-    <div>
-      {{ summaries.length }}
-    </div>
     <!-- カレンダーのヘッダー部分 -->
     <div class="p-1 bg-stone-200">
       <div class="flex justify-between px-10 tb:px-4 items-center">
