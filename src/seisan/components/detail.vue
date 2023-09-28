@@ -1,7 +1,7 @@
 <template>
   <div
     class="bg-stone-50"
-    v-for="transaction in transactions"
+    v-for="transaction in sortedTransactions"
     :key="transaction.id"
   >
     <div class="px-4 py-1 border-b">
@@ -21,6 +21,7 @@
 <script setup lang="ts">
 import * as dayjs from 'dayjs';
 import { useTransactionStore } from '../store/useTransactionStore';
+import { Transaction } from '../types/transaction';
 
 // ストアに格納されたデータを取得してくる
 const transactionStore = useTransactionStore();
@@ -29,4 +30,12 @@ const { state: transactions } = transactionStore;
 const paymentDate = (date: Date): string => {
   return dayjs(date).format('YYYY/MM/DD HH:mm');
 }
+
+const sortedTransactions: ComputedRef<Transaction[]> = computed(() => {
+  return transactions.value.slice().sort((older, newer) => {
+    const olderDate = new Date(older.paymentDate).valueOf();
+    const newerDate = new Date(newer.paymentDate).valueOf();
+    return newerDate - olderDate;
+  });
+});
 </script>
