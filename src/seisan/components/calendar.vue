@@ -1,5 +1,8 @@
 <template>
   <div class="card bg-stone-50 drop-shadow rounded-none">
+    <div>
+      {{ summaries.length }}
+    </div>
     <!-- カレンダーのヘッダー部分 -->
     <div class="p-1 bg-stone-200">
       <div class="flex justify-between px-10 tb:px-4 items-center">
@@ -60,9 +63,10 @@ const { state: transactions } = transactionStore;
 // 現在時刻をストアに格納
 const currentYearMonth: Ref<Dayjs> = useState('currentYearMonth', () => dayjs());
 
-
 // 月初の日付
-const startDate: Dayjs = currentYearMonth.value.startOf('month');
+const startDate: ComputedRef<Dayjs> = computed(() => {
+  return currentYearMonth.value.startOf('month');
+});
 
   // 月末の日付
 const endDate: Ref<number> = ref(currentYearMonth.value.endOf('month').get('date'));
@@ -86,20 +90,23 @@ const summaries: ComputedRef<Summary[]> = computed(() => {
   // 当月のデータを生成
   const amountsPerDay = reduceAmounts(transactions);
   const currentMonth: Summary[] = Array.from({ length: endDate.value }, (_, index) => {
-    const incrementalNumber = index + 1
-    const date = dayjs(startDate).add(index, 'day').format('YYYY/MM/DD');
+    const incrementalNumber = index + 1;
+    const date = dayjs(startDate.value).add(index, 'day').format('YYYY/MM/DD');
+    // todo: 次月・前月にスワイプするとamountsPerDay.valueがundefinedになってしまう原因を探る
     return {
       id: blank.length + incrementalNumber,
       label: incrementalNumber.toString(),
       date,
-      // todo: getがundefinedになってしまう
-      // amountsPerDay.valueがnullではない(≒何らかの値が入る)過程を追ってみる
       amount: amountsPerDay.value === null ? 0 : (amountsPerDay.value.get(date) || 0),
     }
   });
 
   // blankとcurrentMonthを1つの配列に結合
-  return [...blank, ...currentMonth];
+  const summaries: Summary[] = [
+    ...blank,
+    ...currentMonth,
+  ];
+  return summaries;
 });
 
 const reduceAmounts = (
