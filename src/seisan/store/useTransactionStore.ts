@@ -5,12 +5,12 @@ export const useTransactionStore = () => {
 }
 
 class TransactionStore {
-  _state: Ref<Transaction[] | null>;
+  _state: Ref<Transaction[]>;
   constructor() {
-    this._state = useState('transaction', () => null);
+    this._state = useState('transaction', () => []);
   }
 
-  get state(): Readonly<Ref<Readonly<Transaction[]> | null>> {
+  get state(): Readonly<Ref<readonly Transaction[]>> {
     return readonly(this._state);
   }
 
