@@ -11,7 +11,7 @@
       </div>
       <div>
         <span class="px-1 text-sm badge bg-green-600 text-green-50">method</span>
-        <span class="px-1 text-sm">{{ transaction.paymentDate }}</span>
+        <span class="px-1 text-sm">{{ paymentDate(transaction.paymentDate) }}</span>
         <span class="px-1 text-sm">{{ transaction.memo }}</span>
       </div>
     </div>
@@ -19,9 +19,14 @@
 </template>
 
 <script setup lang="ts">
+import * as dayjs from 'dayjs';
 import { useTransactionStore } from '../store/useTransactionStore';
 
 // ストアに格納されたデータを取得してくる
 const transactionStore = useTransactionStore();
 const { state: transactions } = transactionStore;
+
+const paymentDate = (date: Date): string => {
+  return dayjs(date).format('YYYY/MM/DD HH:mm');
+}
 </script>
