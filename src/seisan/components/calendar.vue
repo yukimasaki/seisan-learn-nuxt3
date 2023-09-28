@@ -94,7 +94,7 @@ const summaries: ComputedRef<Summary[]> = computed(() => {
       date,
       // todo: getがundefinedになってしまう
       // amountsPerDay.valueがnullではない(≒何らかの値が入る)過程を追ってみる
-      amount: amountsPerDay.value === null ? 0 : amountsPerDay.value.get(date),
+      amount: amountsPerDay.value === null ? 0 : (amountsPerDay.value.get(date) || 0),
     }
   });
 
@@ -113,7 +113,7 @@ const reduceAmounts = (
 
     if (summaryMap.has(paymentDateStr)) {
       // Map内に既に存在する日付の場合、金額を加算
-      summaryMap.set(paymentDateStr, summaryMap.get(paymentDateStr) + amount);
+      summaryMap.set(paymentDateStr, (summaryMap.get(paymentDateStr) || 0) + amount);
     } else {
       // Map内に存在しない日付の場合、金額を初期化
       summaryMap.set(paymentDateStr, amount);
