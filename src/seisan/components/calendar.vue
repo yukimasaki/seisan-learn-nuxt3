@@ -85,7 +85,7 @@ const summaries: ComputedRef<Summary[]> = computed(() => {
 
   // 当月のデータを生成
   const amountsPerDay = reduceAmounts(transactions);
-  const currentMonth = Array.from({ length: endDate.value }, (_, index) => {
+  const currentMonth: Summary[] = Array.from({ length: endDate.value }, (_, index) => {
     const incrementalNumber = index + 1
     const date = dayjs(startDate).add(index, 'day').format('YYYY/MM/DD');
     return {
@@ -93,7 +93,8 @@ const summaries: ComputedRef<Summary[]> = computed(() => {
       label: incrementalNumber.toString(),
       date,
       // todo: getがundefinedになってしまう
-      amount: amountsPerDay.value ? amountsPerDay.value.get(date) : 0,
+      // amountsPerDay.valueがnullではない(≒何らかの値が入る)過程を追ってみる
+      amount: amountsPerDay.value === null ? 0 : amountsPerDay.value.get(date),
     }
   });
 
@@ -102,10 +103,10 @@ const summaries: ComputedRef<Summary[]> = computed(() => {
 });
 
 const reduceAmounts = (
-  transactions: Readonly<Ref<Readonly<Transaction[]> | null>>
-): ComputedRef<Map<string, number> | false> => computed(() => {
-  if (!transactions || !transactions.value) return false;
-  const summaryMap = new Map();
+  transactions: Readonly<Ref<readonly Transaction[] | null>>
+): ComputedRef<Map<string, number> | null> => computed(() => {
+  if (!transactions || !transactions.value) return null;
+  const summaryMap: Map<string, number> = new Map();
   transactions.value.forEach(transaction => {
     const paymentDateStr = dayjs(transaction.paymentDate).format('YYYY/MM/DD');
     const amount = transaction.amount;
