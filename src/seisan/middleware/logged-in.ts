@@ -1,8 +1,7 @@
-export default defineNuxtRouteMiddleware((to, from) => {
-  const { loggedIn } = useAuth();
-  console.log(`loggedIn: ${loggedIn.value}`);
+export default defineNuxtRouteMiddleware(async (to, from) => {
+  const loggedIn = await useAuth();
 
-  if (loggedIn.value && to.path !== '/') {
+  if (loggedIn && to.path !== '/') {
     return navigateTo('/');
   }
 });
