@@ -4,10 +4,8 @@
       <div class="card-body">
         <h2 class="card-title pb-4">ログイン</h2>
         <div
-          v-if="errorResponse"
           class="text-error text-xs"
         >
-          {{ errorResponse }}
         </div>
         <input
           formControlName="email"
