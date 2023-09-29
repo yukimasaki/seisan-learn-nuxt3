@@ -76,6 +76,7 @@ const showError = reactive({
 
 const login = () => {
   console.log(`login button clicked.`);
+  // todo: ログインAPIを叩き、JWTをクッキーに保存する処理を実装する
 }
 
 const loginForm = {
