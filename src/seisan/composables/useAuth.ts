@@ -8,31 +8,22 @@ const logout = (loggedIn: Ref<boolean>) => {
   loggedIn.value = false;
 }
 
-export const useAuth = () => {
-  // 1. 認証が必要なユーザ情報取得API(/api/users/me)を叩く
-  // ※まだAPIを実装していないのでハードコーディングしている
+export const useAuth = async (): Promise<boolean> => {
+  // todo: ブラウザのクッキーを取り出し下記のAPIに渡す処理を実装する
 
-  // 2. (クッキーにセッションIDを保持している)ログイン済みユーザであればユーザ情報が返却される
-  // a. ユーザ情報を取得できなかった場合
-  // const me = null;
+  // 1. 認証ガードされたプロフィール取得APIを叩く
+  const apiUrl = `http://seisan.local:3001`;
+  const { data: profile } = await useFetch(`${apiUrl}/auth/profile`);
 
-  // b. ユーザ情報を取得できた場合
-  const me = {
-    id: 1,
-    email: 'user1@example.com',
-    displayName: 'User 1',
-    role: 'admin',
-    tenantId: '1',
+  // 2. ストア(loggedIn)にログイン済みであることを示す値(true)を格納する
+  // const loggedIn = useState('loggedIn', () => profile.value ? true : false);
+  const loggedIn = {
+    value: true,
   }
 
-  // 3. ストア(loggedIn)にログイン済みであることを示す値(true)を格納する
-  const loggedIn = useState('loggedIn', () => me ? true : false);
+  // 3. ストア(me)に自分のユーザ情報を格納する
+  useState('profile', () => profile.value);
 
-  // 4. ストア(me)に自分のユーザ情報を格納する
-  useState('me', () => me);
-
-  // 5. 呼び出し元であるミドルウェアにログイン状態を返却する
-  return {
-    loggedIn,
-  }
+  // 4. 呼び出し元であるミドルウェアにログイン状態を返却する
+  return loggedIn.value;
 }
