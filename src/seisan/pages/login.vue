@@ -77,6 +77,7 @@ const showError = reactive({
 const login = () => {
   console.log(`login button clicked.`);
   // todo: ログインAPIを叩き、JWTをクッキーに保存する処理を実装する
+  // ↑ セキュリティ上の理由でHTTP Only Cookieを使用するため、フロントエンド側にはクッキー保存処理は実装しない
 }
 
 const loginForm = {

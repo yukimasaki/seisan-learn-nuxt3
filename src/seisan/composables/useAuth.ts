@@ -18,7 +18,7 @@ export const useAuth = async (): Promise<boolean> => {
   // 2. ストア(loggedIn)にログイン済みであることを示す値(true)を格納する
   // const loggedIn = useState('loggedIn', () => profile.value ? true : false);
   const loggedIn = {
-    value: true,
+    value: false,
   }
 
   // 3. ストア(me)に自分のユーザ情報を格納する
