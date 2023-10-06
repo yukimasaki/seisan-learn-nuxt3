@@ -21,7 +21,7 @@
           <li
             class="text-error text-xs"
           >
-            {{ error }}
+            <!-- {{ error }} -->
           </li>
         </ul>
 
@@ -39,7 +39,7 @@
           <li
             class="text-error text-xs"
           >
-            {{ error }}
+            <!-- {{ error }} -->
           </li>
         </ul>
 
@@ -80,8 +80,8 @@ const email: Ref<string> = ref('');
 const password: Ref<string> = ref('');
 
 const login = async (
-  email: Ref<string>,
-  password: Ref<string>,
+  email: string,
+  password: string,
 ) => {
   // todo: ログインAPIを叩き、JWTをクッキーに保存する処理を実装する
   // ↑ セキュリティ上の理由でHTTP Only Cookieを使用するため、フロントエンド側にはクッキー保存処理は実装しない
@@ -89,12 +89,12 @@ const login = async (
   const { data: loginResponse } = await useFetch(`${apiUlr}/auth/login`, {
     method: 'POST',
     body: {
-      email: email.value,
-      password: password.value,
+      email: email,
+      password: password,
     },
+    credentials: 'include',
   });
-  console.log(email.value);
-  console.log(password.value);
+  console.log(loginResponse.value);
 }
 
 const loginForm = {
