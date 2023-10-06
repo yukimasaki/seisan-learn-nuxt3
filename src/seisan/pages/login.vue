@@ -8,6 +8,7 @@
         >
         </div>
         <input
+          v-model="email"
           formControlName="email"
           type="text"
           placeholder="メールアドレス"
@@ -25,6 +26,7 @@
         </ul>
 
         <input
+          v-model="password"
           formControlName="password"
           type="password"
           placeholder="パスワード"
@@ -51,7 +53,7 @@
           <button
             class="btn btn-primary text-base-100 drop-shadow"
             :disabled="!loginForm.valid"
-            @click="login()"
+            @click="login(email, password)"
           >
             ログイン
           </button>
@@ -61,7 +63,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 definePageMeta({
   middleware: 'logged-in',
   layout: 'before-login',
@@ -74,10 +76,25 @@ const showError = reactive({
 
 // const errorResponse = ref('sample error');
 
-const login = () => {
-  console.log(`login button clicked.`);
+const email: Ref<string> = ref('');
+const password: Ref<string> = ref('');
+
+const login = async (
+  email: Ref<string>,
+  password: Ref<string>,
+) => {
   // todo: ログインAPIを叩き、JWTをクッキーに保存する処理を実装する
   // ↑ セキュリティ上の理由でHTTP Only Cookieを使用するため、フロントエンド側にはクッキー保存処理は実装しない
+  const apiUlr = `http://seisan.local:3001`;
+  const { data: loginResponse } = await useFetch(`${apiUlr}/auth/login`, {
+    method: 'POST',
+    body: {
+      email: email.value,
+      password: password.value,
+    },
+  });
+  console.log(email.value);
+  console.log(password.value);
 }
 
 const loginForm = {
