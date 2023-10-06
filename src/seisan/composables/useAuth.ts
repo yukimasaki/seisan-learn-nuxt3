@@ -6,7 +6,7 @@ export const useAuth = () => {
 
     // 1. 認証ガードされたプロフィール取得APIを叩く
     const apiUrl = `http://seisan.local:3001`;
-    const { data: loginResponse } = await useFetch(`${apiUrl}/auth/profile`, {
+    const { data: loginResponse }: { data: Ref<LoginResponse> } = await useFetch(`${apiUrl}/auth/profile`, {
       credentials: 'include',
     });
 
