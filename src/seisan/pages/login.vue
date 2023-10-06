@@ -94,7 +94,6 @@ const login = async (
     },
     credentials: 'include',
   });
-  console.log(loginResponse.value);
 }
 
 const loginForm = {
