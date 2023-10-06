@@ -79,22 +79,7 @@ const showError = reactive({
 const email: Ref<string> = ref('');
 const password: Ref<string> = ref('');
 
-const login = async (
-  email: string,
-  password: string,
-) => {
-  // todo: ログインAPIを叩き、JWTをクッキーに保存する処理を実装する
-  // ↑ セキュリティ上の理由でHTTP Only Cookieを使用するため、フロントエンド側にはクッキー保存処理は実装しない
-  const apiUlr = `http://seisan.local:3001`;
-  const { data: loginResponse } = await useFetch(`${apiUlr}/auth/login`, {
-    method: 'POST',
-    body: {
-      email: email,
-      password: password,
-    },
-    credentials: 'include',
-  });
-}
+const { login } = useAuth();
 
 const loginForm = {
   valid: true,
