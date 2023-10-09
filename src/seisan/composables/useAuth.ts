@@ -27,18 +27,38 @@ export const useAuth = () => {
     password: string,
   ) => {
     const apiUlr = `http://seisan.local:3001`;
-    const { data: loginResponse }: { data: Ref<LoginResponse> } = await useFetch(`${apiUlr}/auth/login`, {
+
+    // useFetch
+    // const { data: loginResponse }: { data: Ref<LoginResponse> } = await useFetch(`${apiUlr}/auth/login`, {
+    //   method: 'POST',
+    //   body: {
+    //     email,
+    //     password,
+    //   },
+    //   credentials: 'include',
+    // });
+
+    // fetch
+    fetch(`${apiUlr}/auth/login`, {
       method: 'POST',
-      body: {
-        email: email,
-        password: password,
+      headers: {
+        'Content-Type': 'application/json',
       },
+      body: JSON.stringify({
+        email,
+        password: 'aaa',
+      }),
       credentials: 'include',
-    });
+    })
+    .then(async (res) => {
+      const loginResponse: Promise<LoginResponse> = await res.json();
+      console.log(loginResponse);
 
-    // const loggedIn = useState('loggedIn', () => loginResponse.value.userOmitPassword ? true : false);
+      const loggedIn = useState('loggedIn', () => true);
+    })
 
-    return loginResponse.value
+
+    // return loginResponse.value
   }
 
   return {
