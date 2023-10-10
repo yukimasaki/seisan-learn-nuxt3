@@ -11,6 +11,7 @@ export default defineNuxtConfig({
   },
   modules: [
     '@vite-pwa/nuxt',
+    '@pinia/nuxt',
   ],
   app: {
     head: {
