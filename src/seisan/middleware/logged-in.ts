@@ -1,13 +1,19 @@
+import { useLoggedInStore } from "../store/useLoggedInStore";
+
 export default defineNuxtRouteMiddleware(async (to, from) => {
   const { auth } = await useAuth();
-  const loggedIn = await auth();
+  await auth();
+
+  const loggedInStore = useLoggedInStore();
+  const loggedIn = loggedInStore.state;
+
   const authNotRequiredPaths: string[] = [
     '/login',
   ];
 
-  if (loggedIn && authNotRequiredPaths.includes(to.path)) {
+  if (loggedIn.value && authNotRequiredPaths.includes(to.path)) {
     return navigateTo('/');
-  } else if (loggedIn && !authNotRequiredPaths.includes(to.path)) {
+  } else if (loggedIn.value && !authNotRequiredPaths.includes(to.path)) {
     return navigateTo(from.path);
   }
 });

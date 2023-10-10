@@ -53,7 +53,7 @@
           <button
             class="btn btn-primary text-base-100 drop-shadow"
             :disabled="!loginForm.valid"
-            @click="login(email, password)"
+            @click="submitLogin(email, password)"
           >
             ログイン
           </button>
@@ -79,7 +79,13 @@ const showError = reactive({
 const email: Ref<string> = ref('');
 const password: Ref<string> = ref('');
 
-const { login } = useAuth();
+const submitLogin = async (
+  email: string,
+  password: string,
+  ) => {
+  const { login } = useAuth();
+  await login(email, password);
+}
 
 const loginForm = {
   valid: true,
