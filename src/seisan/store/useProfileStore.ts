@@ -5,16 +5,12 @@ export const useProfileStore = () => {
 }
 
 class ProfileStore {
-  _state: Ref<UserOmitPassword>;
+  _state: Ref<UserOmitPassword | null>;
   constructor() {
-    this._state = useState('profile', () => ({
-      email: '',
-      displayName: '',
-      membership: '',
-    }));
+    this._state = useState('profile', () => null);
   }
 
-  get state(): Readonly<Ref<UserOmitPassword>> {
+  get state(): Readonly<Ref<UserOmitPassword | null>> {
     return readonly(this._state);
   }
 
