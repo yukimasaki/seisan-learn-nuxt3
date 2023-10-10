@@ -4,16 +4,21 @@ import { UserOmitPassword } from "../types/user-omit-password";
 
 export const useAuth = () => {
   const auth = async (): Promise<boolean> => {
-    // 1. 認証ガードされたプロフィール取得APIを叩く
+    const loggedInStore = useLoggedInStore();
+    const profileStore = useProfileStore();
+
+    // 1. ストアにユーザー情報が格納されているか確認する
+    const authUser = profileStore.state;
+    if (authUser.value) return true;
+
+    //2. ストアにない場合は、認証ガードされたプロフィール取得APIを叩く
     const apiUrl = `http://seisan.local:3001`;
     const { data: profile }: { data: Ref<UserOmitPassword> } = await useFetch(`${apiUrl}/auth/profile`, {
       credentials: 'include',
     });
 
-    // 2. (1)が401エラーだった場合はリフレッシュトークンを使ってトークンを再取得する
+    // 3. (2)が401エラーだった場合はリフレッシュトークンを使ってトークンを再取得する
     if (!profile.value?.email) {
-      console.log(`ここが実行されてる？`);
-
       const { data: refreshedProfile }: { data: Ref<UserOmitPassword> } = await useFetch(`${apiUrl}/auth/refresh`, {
         credentials: 'include',
       });
@@ -29,12 +34,10 @@ export const useAuth = () => {
     }
 
 
-    // 3. ストア(loggedIn)にログイン済みであることを示す値(true)を格納する
+    // 4. ストア(loggedIn)にログイン済みであることを示す値(true)を格納する
     const loggedIn = profile.value?.hasOwnProperty('email');
-    const loggedInStore = useLoggedInStore();
     loggedInStore.setLoggedIn(loggedIn);
 
-    const profileStore = useProfileStore();
     profileStore.setProfile(profile.value);
 
     return loggedIn;
@@ -66,6 +69,7 @@ export const useAuth = () => {
 
   const logout = async () => {
     const apiUrl = `http://seisan.local:3001`;
+    // todo: 型定義を追加して78行目のエラーを解消する
     const { data: logoutResult } = await useFetch(`${apiUrl}/auth/logout`, {
       method: 'DELETE',
       credentials: 'include',
