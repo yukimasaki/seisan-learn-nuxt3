@@ -12,6 +12,8 @@ export const useAuth = () => {
 
     // 2. (1)が401エラーだった場合はリフレッシュトークンを使ってトークンを再取得する
     if (!profile.value?.email) {
+      console.log(`ここが実行されてる？`);
+
       const { data: refreshedProfile }: { data: Ref<UserOmitPassword> } = await useFetch(`${apiUrl}/auth/refresh`, {
         credentials: 'include',
       });
@@ -62,8 +64,32 @@ export const useAuth = () => {
     if (loggedIn) return navigateTo('/');
   }
 
+  const logout = async () => {
+    const apiUrl = `http://seisan.local:3001`;
+    const { data: logoutResult } = await useFetch(`${apiUrl}/auth/logout`, {
+      method: 'DELETE',
+      credentials: 'include',
+    });
+
+    const loggedIn = logoutResult?.value?.result;
+    if (!loggedIn) {
+      const loggedInStore = useLoggedInStore();
+      loggedInStore.setLoggedIn(loggedIn);
+
+      const profileStore = useProfileStore();
+      profileStore.setProfile({
+        email: '',
+        displayName: '',
+        membership: '',
+      });
+
+      return
+    }
+  }
+
   return {
     auth,
-    login
+    login,
+    logout,
   }
 }
