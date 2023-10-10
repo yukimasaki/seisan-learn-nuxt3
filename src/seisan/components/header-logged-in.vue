@@ -69,7 +69,11 @@
                 </a>
               </li>
               <li>
-                <a href="settings.html" class="flex items-center gap-3 text-sm font-medium duration-300 ease-in-out hover:text-primary">
+                <a
+                  class="flex items-center gap-3 text-sm font-medium duration-300 ease-in-out hover:text-primary"
+                  to="/login"
+                  @click="submitLogout()"
+                >
                   <span>
                     <IconBaselineLogout></IconBaselineLogout>
                   </span>
@@ -95,5 +99,10 @@ const dropdownOpen = ref(false);
 
 const toggleSidebar = () => {
   visibleSidebar.value = !visibleSidebar.value;
+}
+
+const submitLogout = async () => {
+  const { logout } = useAuth();
+  await logout();
 }
 </script>
