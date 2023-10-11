@@ -1,3 +1,5 @@
+import { Category } from "./category"
+
 export type Transaction = {
   id: number,
   creatorId: number,
@@ -8,11 +10,6 @@ export type Transaction = {
   memo: string,
   status: string,
   categoryId: number,
-  category: {
-    id: number,
-    category: string,
-    icon: string,
-    groupId: number,
-  },
+  category: Category,
   groupId: number,
 }
