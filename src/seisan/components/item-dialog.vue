@@ -2,7 +2,7 @@
   <div>
     <button
       class="btn btn-circle drop-shadow"
-      @click="itemDialog.showModal()"
+      @click="openItemDialog()"
     >
       <IconPencil></IconPencil>
     </button>
@@ -114,6 +114,8 @@ import { useField, useForm } from 'vee-validate';
 import { toTypedSchema } from '@vee-validate/zod';
 import { z } from 'zod';
 import dayjs from 'dayjs';
+import { UserOmitPassword } from '../types/user-omit-password';
+import { useProfileStore } from '../store/useProfileStore';
 
 const itemDialog = ref();
 const loadingDialog = ref();
@@ -159,6 +161,18 @@ watch(isSubmitting, () => {
     loadingDialog.value.close();
   }
 });
+
+const openItemDialog = async () => {
+  itemDialog.value.showModal();
+
+  const profileStore = useProfileStore();
+  const authUser: Readonly<Ref<UserOmitPassword | null>> = profileStore.state;
+  if (authUser  && authUser.value) {
+    // todo: userService.findOne(ownEmail)の返り値(UserOmitPassword)にgroupIdを追加する
+    const groupId: number = authUser.value.groupId;
+    await fetchCategory();
+  }
+}
 
 const unit = computed(() => {
     if (
