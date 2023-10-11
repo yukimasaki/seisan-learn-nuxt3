@@ -169,6 +169,7 @@ const openItemDialog = async () => {
   const authUser: Readonly<Ref<UserOmitPassword | null>> = profileStore.state;
   if (authUser  && authUser.value) {
     // todo: userService.findOne(ownEmail)の返り値(UserOmitPassword)にgroupIdを追加する
+    // todo: アクティブなグループを選択しストアとクッキー「等」に保存する処理を先に実装する
     const groupId: number = authUser.value.groupId;
     await fetchCategory();
   }
