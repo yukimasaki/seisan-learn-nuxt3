@@ -75,13 +75,16 @@ export const useAuth = () => {
       credentials: 'include',
     });
 
-    const loggedIn = logoutResult?.value?.result;
+    const loggedIn = logoutResult?.value?.loggedIn;
+    console.log(loggedIn);
     if (!loggedIn) {
       const loggedInStore = useLoggedInStore();
       loggedInStore.setLoggedIn(loggedIn);
 
       const profileStore = useProfileStore();
       profileStore.setProfile(null);
+
+      return navigateTo('/login');
     }
   }
 
