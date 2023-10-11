@@ -1,5 +1,6 @@
 import { useLoggedInStore } from "../store/useLoggedInStore";
 import { useProfileStore } from "../store/useProfileStore";
+import { LogoutResult } from "../types/logout-result";
 import { UserOmitPassword } from "../types/user-omit-password";
 
 export const useAuth = () => {
@@ -67,10 +68,9 @@ export const useAuth = () => {
     if (loggedIn) return navigateTo('/');
   }
 
-  const logout = async () => {
+  const logout = async (): Promise<void> => {
     const apiUrl = `http://seisan.local:3001`;
-    // todo: 型定義を追加して78行目のエラーを解消する
-    const { data: logoutResult } = await useFetch(`${apiUrl}/auth/logout`, {
+    const { data: logoutResult }: { data: Ref<LogoutResult> } = await useFetch(`${apiUrl}/auth/logout`, {
       method: 'DELETE',
       credentials: 'include',
     });
@@ -81,13 +81,7 @@ export const useAuth = () => {
       loggedInStore.setLoggedIn(loggedIn);
 
       const profileStore = useProfileStore();
-      profileStore.setProfile({
-        email: '',
-        displayName: '',
-        membership: '',
-      });
-
-      return
+      profileStore.setProfile(null);
     }
   }
 

@@ -14,7 +14,7 @@ class ProfileStore {
     return readonly(this._state);
   }
 
-  setProfile(profile: UserOmitPassword) {
+  setProfile(profile: UserOmitPassword | null) {
     this._state.value = profile;
   }
 }
