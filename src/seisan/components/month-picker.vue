@@ -1,8 +1,8 @@
 <template>
   <div>
     <div
-      onclick="yearMonthPicker.showModal()"
       class="btn btn-ghost btn-xs"
+      @click="yearMonthPicker.showModal()"
     >
       {{ headerLabel.format('YYYY年M月') }}
     </div>
