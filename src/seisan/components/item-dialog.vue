@@ -39,9 +39,13 @@
             v-model="category"
             class="select select-bordered w-full focus:outline-none bg-stone-50"
           >
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
+
+            <option
+              :value="category.id"
+              v-for="category in categories"
+            >
+              {{ category.category }}
+            </option>
           </select>
 
           <label class="my-2">日付</label>
@@ -116,6 +120,7 @@ import { z } from 'zod';
 import dayjs from 'dayjs';
 import { UserOmitPassword } from '../types/user-omit-password';
 import { useProfileStore } from '../store/useProfileStore';
+import { useCategoryStore } from '../store/useCategoryStore';
 
 const itemDialog = ref();
 const loadingDialog = ref();
@@ -170,10 +175,14 @@ const openItemDialog = async () => {
   if (authUser  && authUser.value) {
     // todo: userService.findOne(ownEmail)の返り値(UserOmitPassword)にgroupIdを追加する
     // todo: アクティブなグループを選択しストアとクッキー「等」に保存する処理を先に実装する
-    const groupId: number = authUser.value.groupId;
-    await fetchCategory();
+    // const groupId: number = authUser.value.groupId;
+    const groupId: number = 1; // ハードコーディングしてる
+    await fetchCategory(groupId);
   }
 }
+
+const categoryStore = useCategoryStore();
+const categories = categoryStore.state;
 
 const unit = computed(() => {
     if (
