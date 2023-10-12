@@ -12,10 +12,6 @@
 <script setup lang="ts">
 import { fetchTransaction } from '../composables/fetchTransaction';
 
-definePageMeta({
-  middleware: 'authenticator',
-});
-
 // transactionsを取得、ストアへ格納
 await fetchTransaction();
 </script>

@@ -11,7 +11,4 @@
 </template>
 
 <script setup lang="ts">
-definePageMeta({
-  middleware: 'authenticator',
-});
 </script>
