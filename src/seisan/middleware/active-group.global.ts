@@ -1,3 +1,5 @@
+import { useActiveGroupStore } from "../store/useActiveGroupStore";
+
 export default defineNuxtRouteMiddleware(async (to, from) => {
   const excludePaths: string[] = [
     '/welcome',
@@ -6,14 +8,16 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   ];
 
   const { getLocalStorage } = usePersist();
+  const activeGroupStore = useActiveGroupStore();
 
-  // ローカルストレージに永続化されている「アクティブなグループ」を、ストアに引っ張り出す (ActiveGroup | null)
-  const activeGroupId: string | null = getLocalStorage('activeGroup');
+  // ローカルストレージに永続化されている「アクティブなグループ」を、ストアに引っ張り出す
+  const activeGroup: string | null = getLocalStorage('activeGroup');
+  activeGroupStore.setActiveGroup(activeGroup);
 
   // todo: メッセージをトーストで表示する
   console.log(`アクティブなグループを設定してください`);
 
   // ストアがnullの場合は「アクティブなグループ」を選択する画面に遷移
-  if (!activeGroupId && !excludePaths.includes(to.path)) return navigateTo('/setting');
+  if (!activeGroup && !excludePaths.includes(to.path)) return navigateTo('/setting');
 
 });
