@@ -1,20 +1,18 @@
-import { ActiveGroup } from "../types/active-group";
-
 export const useActiveGroupStore = () => {
   return new ActiveGroupStore();
 }
 
 class ActiveGroupStore {
-  _state: Ref<ActiveGroup | null>;
+  _state: Ref<string | null>;
   constructor() {
     this._state = useState('activeGroup', () => null);
   }
 
-  get state(): Readonly<Ref<ActiveGroup | null>> {
+  get state(): Readonly<Ref<string | null>> {
     return readonly(this._state);
   }
 
-  setActiveGroup(activeGroup: ActiveGroup | null) {
+  setActiveGroup(activeGroup: string | null) {
     this._state.value = activeGroup;
   }
 }
