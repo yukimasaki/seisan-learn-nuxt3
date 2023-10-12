@@ -6,6 +6,6 @@
 
 <script setup lang="ts">
 definePageMeta({
-  middleware: 'auth-guard',
+  middleware: 'authenticator',
 });
 </script>

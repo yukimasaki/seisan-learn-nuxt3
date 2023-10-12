@@ -13,7 +13,7 @@
 import { fetchTransaction } from '../composables/fetchTransaction';
 
 definePageMeta({
-  middleware: 'auth-guard',
+  middleware: 'authenticator',
 });
 
 // transactionsを取得、ストアへ格納

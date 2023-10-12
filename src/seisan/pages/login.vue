@@ -65,7 +65,7 @@
 
 <script setup lang="ts">
 definePageMeta({
-  middleware: 'logged-in',
+  middleware: 'authenticated',
   layout: 'before-login',
 });
 
