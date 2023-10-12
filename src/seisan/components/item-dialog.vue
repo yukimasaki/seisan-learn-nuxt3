@@ -118,9 +118,8 @@ import { useField, useForm } from 'vee-validate';
 import { toTypedSchema } from '@vee-validate/zod';
 import { z } from 'zod';
 import dayjs from 'dayjs';
-import { UserOmitPassword } from '../types/user-omit-password';
-import { useProfileStore } from '../store/useProfileStore';
 import { useCategoryStore } from '../store/useCategoryStore';
+import { useActiveGroupStore } from '../store/useActiveGroupStore';
 
 const itemDialog = ref();
 const loadingDialog = ref();
@@ -169,16 +168,11 @@ watch(isSubmitting, () => {
 
 const openItemDialog = async () => {
   itemDialog.value.showModal();
+  const activeGroupStore = useActiveGroupStore();
+  const groupId = activeGroupStore.state.value;
+  console.log(groupId);
 
-  const profileStore = useProfileStore();
-  const authUser: Readonly<Ref<UserOmitPassword | null>> = profileStore.state;
-  if (authUser  && authUser.value) {
-    // todo: userService.findOne(ownEmail)の返り値(UserOmitPassword)にgroupIdを追加する
-    // todo: アクティブなグループを選択しストアとクッキー「等」に保存する処理を先に実装する
-    // const groupId: number = authUser.value.groupId;
-    const groupId: number = 1; // ハードコーディングしてる
-    await fetchCategory(groupId);
-  }
+  if (groupId) await fetchCategory(+groupId);
 }
 
 const categoryStore = useCategoryStore();
