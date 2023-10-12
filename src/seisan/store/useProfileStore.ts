@@ -1,4 +1,4 @@
-import { UserOmitPassword } from "../types/user-omit-password";
+import { UserOmitPassword } from "../types/user";
 
 export const useProfileStore = () => {
   return new ProfileStore();

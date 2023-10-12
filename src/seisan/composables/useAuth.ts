@@ -1,7 +1,7 @@
 import { useLoggedInStore } from "../store/useLoggedInStore";
 import { useProfileStore } from "../store/useProfileStore";
 import { LogoutResult } from "../types/logout-result";
-import { UserOmitPassword } from "../types/user-omit-password";
+import { UserOmitPassword } from "../types/user";
 
 export const useAuth = () => {
   const auth = async (): Promise<boolean> => {

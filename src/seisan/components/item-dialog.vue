@@ -74,9 +74,9 @@
             class="flex justify-between mb-2"
             v-if="paymentMethod && paymentMethod !== 'なし'"
             v-for="member in members"
-            :key="member.id"
+            :key="member.user.id"
           >
-            <span>{{ member.name }}</span>
+            <span>{{ member.user.displayName }}</span>
             <div>
               <input
                 type="number"
@@ -119,6 +119,7 @@ import { toTypedSchema } from '@vee-validate/zod';
 import { z } from 'zod';
 import dayjs from 'dayjs';
 import { useCategoryStore } from '../store/useCategoryStore';
+import { useMemberStore } from '../store/useMemberStore';
 import { useActiveGroupStore } from '../store/useActiveGroupStore';
 
 const itemDialog = ref();
@@ -168,15 +169,20 @@ watch(isSubmitting, () => {
 
 const openItemDialog = async () => {
   itemDialog.value.showModal();
-  const activeGroupStore = useActiveGroupStore();
-  const groupId = activeGroupStore.state.value;
-  console.log(groupId);
+}
 
-  if (groupId) await fetchCategory(+groupId);
+const activeGroupStore = useActiveGroupStore();
+const groupId = activeGroupStore.state.value;
+if (groupId) {
+  await fetchCategory(+groupId);
+  await fetchMember(+groupId);
 }
 
 const categoryStore = useCategoryStore();
 const categories = categoryStore.state;
+
+const memberStore = useMemberStore();
+const members = memberStore.state;
 
 const unit = computed(() => {
     if (
@@ -188,22 +194,4 @@ const unit = computed(() => {
       return '円'
     }
 });
-
-const members = [
-  {
-    id: 1,
-    name: 'member 1',
-    email: 'member1@example.com',
-  },
-  {
-    id: 2,
-    name: 'member 2',
-    email: 'member2@example.com',
-  },
-  {
-    id: 3,
-    name: 'member 3',
-    email: 'member3@example.com',
-  },
-];
 </script>
