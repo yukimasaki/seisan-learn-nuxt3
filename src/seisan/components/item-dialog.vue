@@ -61,7 +61,7 @@
             class="textarea textarea-bordered w-full focus:outline-none bg-stone-50"
           />
 
-          <div class="flex justify-between my-2">
+          <div class="flex justify-between mb-2 my-4">
             <label class="my-auto">割り勘方法</label>
             <div class="join my-auto">
               <input type="radio" class="join-item btn btn-sm" aria-label="均等" value="均等" v-model="paymentMethod">
@@ -70,6 +70,7 @@
               <input type="radio" class="join-item btn btn-sm" aria-label="なし" value="なし" v-model="paymentMethod">
             </div>
           </div>
+
           <div
             class="flex justify-between mb-2"
             v-if="paymentMethod && paymentMethod !== 'なし'"
@@ -83,6 +84,28 @@
                 class="input input-bordered focus:outline-none bg-stone-50 w-16 input-sm"
               >
               <span class="pl-1">{{ unit }}</span>
+            </div>
+          </div>
+
+          <div
+            class="flex justify-between mb-2 my-4"
+            v-if="paymentMethod && paymentMethod !== 'なし'"
+          >
+            <label class="my-auto">負担金額</label>
+          </div>
+          <div
+            class="flex justify-between mb-2"
+            v-if="paymentMethod && paymentMethod !== 'なし'"
+            v-for="member in members"
+            :key="member.user.id"
+          >
+            <span>{{ member.user.displayName }}</span>
+            <div>
+              <input
+                type="number"
+                class="input input-bordered focus:outline-none bg-stone-50 w-16 input-sm"
+              >
+              <span class="pl-1">円</span>
             </div>
           </div>
         </div>
