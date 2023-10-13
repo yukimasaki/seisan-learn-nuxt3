@@ -27,16 +27,16 @@
         <div class="flex flex-col">
           <label class="my-2">金額</label>
           <input
-            v-model="amount"
+            v-model="createTransactionForm.amount"
             type="number"
             placeholder="1980"
             class="input input-bordered w-full focus:outline-none bg-stone-50"
           />
-          <span v-if="errors.amount" class="text-error text-sm">{{ errors.amount }}</span>
+          <!-- <span v-if="errors.amount" class="text-error text-sm">{{ errors.amount }}</span> -->
 
           <label class="my-2">カテゴリ</label>
           <select
-            v-model="category"
+            v-model="createTransactionForm.category"
             class="select select-bordered w-full focus:outline-none bg-stone-50"
           >
 
@@ -50,30 +50,31 @@
 
           <label class="my-2">日付</label>
           <input
-            v-model="paymentDate"
+            v-model="createTransactionForm.paymentDate"
             type="date"
             class="input input-bordered w-full focus:outline-none bg-stone-50"
           />
 
           <label class="my-2">メモ</label>
           <textarea
-            v-model="memo"
+            v-model="createTransactionForm.memo"
             class="textarea textarea-bordered w-full focus:outline-none bg-stone-50"
           />
 
           <div class="flex justify-between mb-2 my-4">
             <label class="my-auto">割り勘方法</label>
             <div class="join my-auto">
-              <input type="radio" class="join-item btn btn-sm" aria-label="均等" value="均等" v-model="paymentMethod">
-              <input type="radio" class="join-item btn btn-sm" aria-label="比率" value="比率" v-model="paymentMethod" checked>
-              <input type="radio" class="join-item btn btn-sm" aria-label="金額" value="金額" v-model="paymentMethod">
-              <input type="radio" class="join-item btn btn-sm" aria-label="なし" value="なし" v-model="paymentMethod">
+              <!-- issue: クリックするとボタン色が反転せずに全部押された状態になってしまう -->
+              <input type="radio" class="join-item btn btn-sm" aria-label="均等" value="均等" v-model="createTransactionForm.paymentMethod">
+              <input type="radio" class="join-item btn btn-sm" aria-label="比率" value="比率" v-model="createTransactionForm.paymentMethod" checked>
+              <input type="radio" class="join-item btn btn-sm" aria-label="金額" value="金額" v-model="createTransactionForm.paymentMethod">
+              <input type="radio" class="join-item btn btn-sm" aria-label="なし" value="なし" v-model="createTransactionForm.paymentMethod">
             </div>
           </div>
 
           <div
             class="flex justify-between mb-2"
-            v-if="paymentMethod && paymentMethod !== 'なし'"
+            v-if="createTransactionForm.paymentMethod && createTransactionForm.paymentMethod !== 'なし'"
             v-for="member in members"
             :key="member.user.id"
           >
@@ -89,19 +90,20 @@
 
           <div
             class="flex justify-between mb-2 my-4"
-            v-if="paymentMethod && paymentMethod !== 'なし'"
+            v-if="createTransactionForm.paymentMethod && createTransactionForm.paymentMethod !== 'なし'"
           >
             <label class="my-auto">負担金額</label>
           </div>
           <div
             class="flex justify-between mb-2"
-            v-if="paymentMethod && paymentMethod !== 'なし'"
-            v-for="member in members"
+            v-if="createTransactionForm.paymentMethod && createTransactionForm.paymentMethod !== 'なし'"
+            v-for="(member, idx) in members"
             :key="member.user.id"
           >
             <span>{{ member.user.displayName }}</span>
             <div>
               <input
+                v-model="createTransactionForm.actualPaymentAmounts[idx]"
                 type="number"
                 class="input input-bordered focus:outline-none bg-stone-50 w-16 input-sm"
               >
@@ -118,9 +120,13 @@
 
           <button
             class="btn w-1/2 drop-shadow"
-            :disabled="!meta.valid"
-            @click="submit()"
+            @click="submit(createTransactionForm)"
           >
+          <!-- <button
+            class="btn w-1/2 drop-shadow"
+            :disabled="!valid"
+            @click="submit(createTransactionForm)"
+          > -->
             作成
           </button>
         </div>
@@ -137,8 +143,6 @@
 </template>
 
 <script setup lang="ts">
-import { useField, useForm } from 'vee-validate';
-import { toTypedSchema } from '@vee-validate/zod';
 import { z } from 'zod';
 import dayjs from 'dayjs';
 import { useCategoryStore } from '../store/useCategoryStore';
@@ -148,39 +152,31 @@ import { useActiveGroupStore } from '../store/useActiveGroupStore';
 const itemDialog = ref();
 const loadingDialog = ref();
 
-const schema = toTypedSchema(
-  z.object({
-    amount: z.number().positive(),
-    category: z.string().nonempty(),
-    paymentDate: z.string().nonempty(),
-    memo: z.string().min(0),
-    paymentMethod: z.string(),
-  })
-);
+const createTransactionForm = {
+  amount: null,
+  category: 1,
+  paymentDate: dayjs().format('YYYY/MM/DD').valueOf(),
+  memo: '',
+  paymentMethod: 'ratio',
+  actualPaymentAmounts: [],
+}
 
-const { errors, meta, handleSubmit, isSubmitting } = useForm({
-  validationSchema: schema,
-});
+const createTransactionSchema = {
+  amount: z.number().positive(),
+  category: z.string().nonempty(),
+  paymentDate: z.string().nonempty(),
+  memo: z.string().min(0),
+  paymentMethod: z.string(),
+  actualPaymentAmounts: z.array(z.number()),
+}
 
-const { value: amount } = useField('amount');
-const { value: category } = useField('category', undefined, {
-  initialValue: '1',
-});
-const { value: paymentDate } = useField('paymentDate', undefined, {
-  initialValue: dayjs().format('YYYY-MM-DD'),
-});
-const { value: memo } = useField('memo', undefined, {
-  initialValue: '',
-});
-const { value: paymentMethod } = useField('paymentMethod', undefined, {
-  initialValue: 'ratio',
-});
-
-const submit = handleSubmit(async (values) => {
+const isSubmitting: Ref<boolean> = ref(false);
+const submit = async (createTransactionSchema: any) => {
+  isSubmitting.value = true;
   itemDialog.value.close();
   await new Promise((resolve) => setTimeout(resolve, 3000));
-  console.log(values);
-});
+  console.log(createTransactionSchema);
+};
 
 watch(isSubmitting, () => {
   if (isSubmitting.value) {
@@ -209,8 +205,8 @@ const members = memberStore.state;
 
 const unit = computed(() => {
     if (
-      paymentMethod.value === '均等' ||
-      paymentMethod.value === '比率'
+      createTransactionForm.paymentMethod === '均等' ||
+      createTransactionForm.paymentMethod === '比率'
     ) {
       return '%'
     } else {
