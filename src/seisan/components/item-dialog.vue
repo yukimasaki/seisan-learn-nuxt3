@@ -152,14 +152,14 @@ import { useActiveGroupStore } from '../store/useActiveGroupStore';
 const itemDialog = ref();
 const loadingDialog = ref();
 
-const createTransactionForm = {
+const createTransactionForm = reactive({
   amount: null,
   category: 1,
   paymentDate: dayjs().format('YYYY/MM/DD').valueOf(),
   memo: '',
-  paymentMethod: 'ratio',
+  paymentMethod: '比率',
   actualPaymentAmounts: [],
-}
+})
 
 const createTransactionSchema = {
   amount: z.number().positive(),
