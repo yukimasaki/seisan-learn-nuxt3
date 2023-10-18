@@ -155,7 +155,7 @@ const loadingDialog = ref();
 const createTransactionForm = reactive({
   amount: null,
   category: 1,
-  paymentDate: dayjs().format('YYYY/MM/DD').valueOf(),
+  paymentDate: dayjs().format('YYYY-MM-DD').valueOf(),
   memo: '',
   paymentMethod: '比率',
   actualPaymentAmounts: [],
@@ -171,11 +171,12 @@ const createTransactionSchema = {
 }
 
 const isSubmitting: Ref<boolean> = ref(false);
-const submit = async (createTransactionSchema: any) => {
+const submit = async (createTransactionForm: any) => {
   isSubmitting.value = true;
   itemDialog.value.close();
   await new Promise((resolve) => setTimeout(resolve, 3000));
-  console.log(createTransactionSchema);
+  console.log(createTransactionForm);
+  isSubmitting.value = false;
 };
 
 watch(isSubmitting, () => {
@@ -185,6 +186,8 @@ watch(isSubmitting, () => {
     loadingDialog.value.close();
   }
 });
+
+// todo: watchでcreateTransactionFormオブジェクトを監視してバリデーションを実装する
 
 const openItemDialog = async () => {
   itemDialog.value.showModal();
