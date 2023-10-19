@@ -31,8 +31,9 @@
             type="number"
             placeholder="1980"
             class="input input-bordered w-full focus:outline-none bg-stone-50"
+            @blur="validateAmount(createTransactionForm.amount)"
           />
-          <!-- <span v-if="errors.amount" class="text-error text-sm">{{ errors.amount }}</span> -->
+          <span v-if="errors.amount" class="text-error text-sm">{{ errors.amount }}</span>
 
           <label class="my-2">カテゴリ</label>
           <select
@@ -143,32 +144,27 @@
 </template>
 
 <script setup lang="ts">
-import { z } from 'zod';
 import dayjs from 'dayjs';
 import { useCategoryStore } from '../store/useCategoryStore';
 import { useMemberStore } from '../store/useMemberStore';
 import { useActiveGroupStore } from '../store/useActiveGroupStore';
+import { useCreateItemDialogValidator } from '../validations/createItemDialog.validate';
 
 const itemDialog = ref();
 const loadingDialog = ref();
 
 const createTransactionForm = reactive({
-  amount: null,
+  amount: '',
   category: 1,
   paymentDate: dayjs().format('YYYY-MM-DD').valueOf(),
   memo: '',
   paymentMethod: '比率',
   actualPaymentAmounts: [],
-})
+});
 
-const createTransactionSchema = {
-  amount: z.number().positive(),
-  category: z.string().nonempty(),
-  paymentDate: z.string().nonempty(),
-  memo: z.string().min(0),
-  paymentMethod: z.string(),
-  actualPaymentAmounts: z.array(z.number()),
-}
+// バリデーション
+const createItemDialogValidator = useCreateItemDialogValidator();
+const { errors, validateAmount } = createItemDialogValidator;
 
 const isSubmitting: Ref<boolean> = ref(false);
 const submit = async (createTransactionForm: any) => {
@@ -186,8 +182,6 @@ watch(isSubmitting, () => {
     loadingDialog.value.close();
   }
 });
-
-// todo: watchでcreateTransactionFormオブジェクトを監視してバリデーションを実装する
 
 const openItemDialog = async () => {
   itemDialog.value.showModal();
