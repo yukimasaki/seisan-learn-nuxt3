@@ -31,7 +31,7 @@
             type="number"
             placeholder="1980"
             class="input input-bordered w-full focus:outline-none bg-stone-50"
-            @blur="validate('amount', createTransactionForm.amount)"
+            @blur="validate(schema, 'amount', createTransactionForm.amount)"
           />
           <span v-if="errors.amount" class="text-error text-sm">{{ errors.amount }}</span>
 
@@ -144,11 +144,12 @@
 </template>
 
 <script setup lang="ts">
+import * as z from 'zod';
 import dayjs from 'dayjs';
 import { useCategoryStore } from '../store/useCategoryStore';
 import { useMemberStore } from '../store/useMemberStore';
 import { useActiveGroupStore } from '../store/useActiveGroupStore';
-import { useCreateItemDialogValidator } from '../validations/createItemDialog.validate';
+import { useBaseValidator } from '../validations/BaseValidator';
 
 const itemDialog = ref();
 const loadingDialog = ref();
@@ -163,11 +164,16 @@ const createTransactionForm = reactive({
 });
 
 // バリデーション
-const createItemDialogValidator = useCreateItemDialogValidator();
-const {
-  errors,
-  validate,
-} = createItemDialogValidator;
+const schema = {
+  amount: z.number().positive(),
+  category: z.string().nonempty(),
+  paymentDate: z.string().nonempty(),
+  memo: z.string().min(0),
+  paymentMethod: z.string(),
+  actualPaymentAmounts: z.array(z.number()),
+};
+const validator = useBaseValidator(schema);
+const { errors, validate } = validator;
 
 const isSubmitting: Ref<boolean> = ref(false);
 const submit = async (createTransactionForm: any) => {
