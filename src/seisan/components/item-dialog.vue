@@ -31,7 +31,7 @@
             type="number"
             placeholder="1980"
             class="input input-bordered w-full focus:outline-none bg-stone-50"
-            @blur="validate(schema, 'amount', createTransactionForm.amount)"
+            @blur="validate('amount', createTransactionForm.amount)"
           />
           <span v-if="errors.amount" class="text-error text-sm">{{ errors.amount }}</span>
 
