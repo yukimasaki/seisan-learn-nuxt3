@@ -31,7 +31,7 @@
             type="number"
             placeholder="1980"
             class="input input-bordered w-full focus:outline-none bg-stone-50"
-            @blur="validateAmount(createTransactionForm.amount)"
+            @blur="validate('amount', createTransactionForm.amount)"
           />
           <span v-if="errors.amount" class="text-error text-sm">{{ errors.amount }}</span>
 
@@ -164,7 +164,10 @@ const createTransactionForm = reactive({
 
 // バリデーション
 const createItemDialogValidator = useCreateItemDialogValidator();
-const { errors, validateAmount } = createItemDialogValidator;
+const {
+  errors,
+  validate,
+} = createItemDialogValidator;
 
 const isSubmitting: Ref<boolean> = ref(false);
 const submit = async (createTransactionForm: any) => {
