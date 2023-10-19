@@ -4,6 +4,8 @@ type ValidationErrors = {
   [key: string]: string,
 }
 
+type ValidationResults = boolean[];
+
 type Schema = Record<
   string,
   any
@@ -12,18 +14,24 @@ type Schema = Record<
 class BaseValidator {
   errors: ValidationErrors;
   schema: Schema;
+  results: ValidationResults;
 
   constructor(
     schema: Schema,
   ) {
     this.errors = reactive({}) as ValidationErrors;
-    this. schema = schema;
+    this.schema = schema;
+    this.results = Array.from({ length: this.schema.length }, (_, index) => {
+      console.log(this.schema);
+
+      return false;
+    });
   }
 
   validate(
     key: string,
     value: any,
-  ): boolean {
+    ): boolean {
     const keys = Object.keys(this.schema) as (keyof typeof this.schema)[];
     if (!keys.includes(key)) return false;
 

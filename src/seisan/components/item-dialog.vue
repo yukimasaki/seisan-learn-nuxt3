@@ -39,7 +39,9 @@
           <select
             v-model="createTransactionForm.category"
             class="select select-bordered w-full focus:outline-none bg-stone-50"
+            @blur="validate('category', createTransactionForm.category)"
           >
+          <span v-if="errors.category" class="text-error text-sm">{{ errors.category }}</span>
 
             <option
               :value="category.id"
@@ -54,7 +56,9 @@
             v-model="createTransactionForm.paymentDate"
             type="date"
             class="input input-bordered w-full focus:outline-none bg-stone-50"
+            @blur="validate('paymentDate', createTransactionForm.paymentDate)"
           />
+          <span v-if="errors.paymentDate" class="text-error text-sm">{{ errors.paymentDate }}</span>
 
           <label class="my-2">メモ</label>
           <textarea
@@ -122,15 +126,15 @@
             キャンセル
           </button>
 
-          <button
+          <!-- <button
             class="btn w-1/2 drop-shadow"
             @click="submit(createTransactionForm)"
-          >
-          <!-- <button
+          > -->
+          <button
             class="btn w-1/2 drop-shadow"
             :disabled="!valid"
             @click="submit(createTransactionForm)"
-          > -->
+          >
             作成
           </button>
         </div>
@@ -176,7 +180,12 @@ const schema = {
   actualPaymentAmounts: z.number().positive(),
 };
 const validator = useBaseValidator(schema);
-const { errors, validate } = validator;
+const { errors, results, validate } = validator;
+
+const valid = ref(results.every(result => result === true));
+console.log(valid.value);
+console.log(results);
+
 
 const isSubmitting: Ref<boolean> = ref(false);
 const submit = async (createTransactionForm: any) => {
