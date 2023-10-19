@@ -95,6 +95,7 @@
           >
             <label class="my-auto">負担金額</label>
           </div>
+
           <div
             class="flex justify-between mb-2"
             v-if="createTransactionForm.paymentMethod && createTransactionForm.paymentMethod !== 'なし'"
@@ -107,10 +108,12 @@
                 v-model="createTransactionForm.actualPaymentAmounts[idx]"
                 type="number"
                 class="input input-bordered focus:outline-none bg-stone-50 w-16 input-sm"
+                @blur="validate('actualPaymentAmounts', createTransactionForm.actualPaymentAmounts[idx])"
               >
               <span class="pl-1">円</span>
             </div>
           </div>
+          <span v-if="errors.actualPaymentAmounts" class="text-error text-sm">{{ errors.actualPaymentAmounts }}</span>
         </div>
 
         <!-- フッター部分 -->
@@ -170,7 +173,7 @@ const schema = {
   paymentDate: z.string().nonempty(),
   memo: z.string().min(0),
   paymentMethod: z.string(),
-  actualPaymentAmounts: z.array(z.number()),
+  actualPaymentAmounts: z.number().positive(),
 };
 const validator = useBaseValidator(schema);
 const { errors, validate } = validator;
