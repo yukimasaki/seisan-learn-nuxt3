@@ -1,57 +1,74 @@
 import * as z from 'zod';
 
 type ValidationErrors = {
-  [key: string]: string,
+  [key: string]: string | null,
 }
 
-type ValidationResults = boolean[];
+type ValidationResults = {
+  [key: string]: boolean,
+}
 
 type Schema = Record<
   string,
   any
->;
+>
+
+type DefaultValues = Record<
+string,
+any
+>
 
 class BaseValidator {
-  errors: ValidationErrors;
   schema: Schema;
-  results: ValidationResults;
+  errors: ValidationErrors = reactive({});
+  results: ValidationResults = reactive({});
+  keys: string[] = [];
 
   constructor(
     schema: Schema,
+    defaultValues: DefaultValues,
   ) {
-    this.errors = reactive({}) as ValidationErrors;
     this.schema = schema;
-    this.results = Array.from({ length: this.schema.length }, (_, index) => {
-      console.log(this.schema);
+    this.keys = Object.keys(schema) as (keyof typeof schema)[];
+    Object.keys(schema).map(key => {
+      this.results[key] = false;
+    });
 
-      return false;
+    // ダイアログの初回起動時、デフォルトで設定されている値をもとにバリデーションを実行する
+    Object.keys(schema).map(key => {
+      Object.keys(defaultValues).map(value => {
+        this.validate(key, value);
+      });
+      // ダイアログの初回起動時はエラーメッセージを非表示にする
+      this.errors[key] = null;
     });
   }
 
-  validate(
+  validate = (
     key: string,
     value: any,
-    ): boolean {
-    const keys = Object.keys(this.schema) as (keyof typeof this.schema)[];
-    if (!keys.includes(key)) return false;
+  ): void => {
+    if (!this.keys.includes(key)) return;
 
     try {
       this.schema[key].parse(value);
-      this.errors[key] = '';
-      return true;
+      this.errors[key] = null;
+      this.results[key] = true;
     } catch (error) {
       if (error instanceof z.ZodError) {
         this.errors[key] = error.issues[0].message;
-        return false;
+        this.results[key] = false;
       }
-
-      return false;
     }
   }
 }
 
 export const useBaseValidator = (
   schema: Schema,
+  defaultValues: DefaultValues,
 ) => {
-  return new BaseValidator(schema);
+  return new BaseValidator(
+    schema,
+    defaultValues,
+  );
 }

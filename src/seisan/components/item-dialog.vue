@@ -39,10 +39,7 @@
           <select
             v-model="createTransactionForm.category"
             class="select select-bordered w-full focus:outline-none bg-stone-50"
-            @blur="validate('category', createTransactionForm.category)"
           >
-          <span v-if="errors.category" class="text-error text-sm">{{ errors.category }}</span>
-
             <option
               :value="category.id"
               v-for="category in categories"
@@ -171,21 +168,17 @@ const createTransactionForm = reactive({
 });
 
 // バリデーション
-const schema = {
-  amount: z.number().positive(),
-  category: z.string().nonempty(),
+const formSchema = {
+  amount: z.number().nonnegative(),
   paymentDate: z.string().nonempty(),
-  memo: z.string().min(0),
-  paymentMethod: z.string(),
-  actualPaymentAmounts: z.number().positive(),
+  actualPaymentAmounts: z.number().nonnegative(),
 };
-const validator = useBaseValidator(schema);
+const validator = useBaseValidator(formSchema, createTransactionForm);
 const { errors, results, validate } = validator;
 
-const valid = ref(results.every(result => result === true));
-console.log(valid.value);
-console.log(results);
-
+const valid = computed(() => {
+  return Object.values(results).every(result => result === true);
+});
 
 const isSubmitting: Ref<boolean> = ref(false);
 const submit = async (createTransactionForm: any) => {
