@@ -62,11 +62,12 @@ class BaseValidator {
     // console.log(this.results);
   }
 
-  setToTrue = (
+  setValidate = (
     key: string,
+    value: boolean,
   ): void => {
     if (!this.keys.includes(key)) return;
-    this.results[key] = true;
+    this.results[key] = value;
     console.log(this.results);
 
   }
