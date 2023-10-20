@@ -66,22 +66,21 @@
           <div class="flex justify-between mb-2 my-4">
             <label class="my-auto">割り勘方法</label>
             <div class="join my-auto">
-              <!-- todo: ボタングループ押下時に入力値をクリアする処理を実装する -->
               <input
                 v-model="createTransactionForm.paymentMethod"
-                @click="setValidate('actualPaymentAmounts', false)"
+                @click="setValidate('actualPaymentAmounts', false); clearActualPaymentAmounts();"
                 type="radio" class="join-item btn btn-sm" aria-label="均等" value="均等">
               <input
                 v-model="createTransactionForm.paymentMethod"
-                @click="setValidate('actualPaymentAmounts', false)"
+                @click="setValidate('actualPaymentAmounts', false); clearActualPaymentAmounts();"
                 type="radio" class="join-item btn btn-sm" aria-label="比率" value="比率" checked>
               <input
                 v-model="createTransactionForm.paymentMethod"
-                @click="setValidate('actualPaymentAmounts', false)"
+                @click="setValidate('actualPaymentAmounts', false); clearActualPaymentAmounts();"
                 type="radio" class="join-item btn btn-sm" aria-label="金額" value="金額">
               <input
                 v-model="createTransactionForm.paymentMethod"
-                @click="setValidate('actualPaymentAmounts', true)"
+                @click="setValidate('actualPaymentAmounts', true); clearActualPaymentAmounts();"
                 type="radio" class="join-item btn btn-sm" aria-label="なし" value="なし">
             </div>
           </div>
@@ -131,14 +130,13 @@
 
         <!-- フッター部分 -->
         <div class="modal-action justify-center">
-          <button class="btn w-1/2 drop-shadow">
+          <button
+            class="btn w-1/2 drop-shadow"
+            @click="clearAllInputs()"
+          >
             キャンセル
           </button>
 
-          <!-- <button
-            class="btn w-1/2 drop-shadow"
-            @click="submit(createTransactionForm)"
-          > -->
           <button
             class="btn w-1/2 drop-shadow"
             :disabled="!valid"
@@ -187,10 +185,24 @@ const formSchema = {
 };
 const validator = useBaseValidator(formSchema, createTransactionForm);
 const { errors, results, validate, setValidate } = validator;
-
 const valid = computed(() => {
   return Object.values(results).every(result => result === true);
 });
+
+const clearActualPaymentAmounts = () => {
+  createTransactionForm.actualPaymentAmounts = [];
+}
+
+const clearAllInputs = async () => {
+  await Promise.all([
+    createTransactionForm.amount = '',
+    createTransactionForm.category = 1,
+    createTransactionForm.paymentDate = dayjs().format('YYYY-MM-DD').valueOf(),
+    createTransactionForm.memo = '',
+    createTransactionForm.paymentMethod = '比率',
+    createTransactionForm.actualPaymentAmounts = [],
+  ]);
+}
 
 const isSubmitting: Ref<boolean> = ref(false);
 const submit = async (createTransactionForm: any) => {
