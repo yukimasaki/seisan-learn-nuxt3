@@ -70,7 +70,7 @@
               <input type="radio" class="join-item btn btn-sm" aria-label="均等" value="均等" v-model="createTransactionForm.paymentMethod">
               <input type="radio" class="join-item btn btn-sm" aria-label="比率" value="比率" v-model="createTransactionForm.paymentMethod" checked>
               <input type="radio" class="join-item btn btn-sm" aria-label="金額" value="金額" v-model="createTransactionForm.paymentMethod">
-              <input type="radio" class="join-item btn btn-sm" aria-label="なし" value="なし" v-model="createTransactionForm.paymentMethod">
+              <input type="radio" class="join-item btn btn-sm" aria-label="なし" value="なし" v-model="createTransactionForm.paymentMethod" @click="setToTrue('actualPaymentAmounts')">
             </div>
           </div>
 
@@ -174,7 +174,7 @@ const formSchema = {
   actualPaymentAmounts: z.number().nonnegative(),
 };
 const validator = useBaseValidator(formSchema, createTransactionForm);
-const { errors, results, validate } = validator;
+const { errors, results, validate, setToTrue } = validator;
 
 const valid = computed(() => {
   return Object.values(results).every(result => result === true);

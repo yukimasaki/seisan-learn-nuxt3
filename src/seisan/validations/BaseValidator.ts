@@ -49,7 +49,6 @@ class BaseValidator {
     value: any,
   ): void => {
     if (!this.keys.includes(key)) return;
-
     try {
       this.schema[key].parse(value);
       this.errors[key] = null;
@@ -60,6 +59,16 @@ class BaseValidator {
         this.results[key] = false;
       }
     }
+    // console.log(this.results);
+  }
+
+  setToTrue = (
+    key: string,
+  ): void => {
+    if (!this.keys.includes(key)) return;
+    this.results[key] = true;
+    console.log(this.results);
+
   }
 }
 
