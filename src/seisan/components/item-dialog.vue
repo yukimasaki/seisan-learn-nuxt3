@@ -105,7 +105,7 @@
             class="flex justify-between mb-2 my-4"
             v-if="createTransactionForm.paymentMethod && createTransactionForm.paymentMethod !== 'なし'"
           >
-            <label class="my-auto">負担金額</label>
+            <label class="my-auto">誰がいくら立て替えた？</label>
           </div>
 
           <div
@@ -184,7 +184,7 @@ const formSchema = {
   actualPaymentAmounts: z.number().nonnegative(),
 };
 const validator = useBaseValidator(formSchema, createTransactionForm);
-const { errors, results, validate, setValidate } = validator;
+const { errors, results, keys, validate, setValidate } = validator;
 const valid = computed(() => {
   return Object.values(results).every(result => result === true);
 });
@@ -201,6 +201,7 @@ const clearAllInputs = async () => {
     createTransactionForm.memo = '',
     createTransactionForm.paymentMethod = '比率',
     createTransactionForm.actualPaymentAmounts = [],
+    keys.map(key => errors[key] = null),
   ]);
 }
 
