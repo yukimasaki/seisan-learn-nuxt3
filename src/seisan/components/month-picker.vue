@@ -2,13 +2,13 @@
   <div>
     <div
       class="btn btn-ghost btn-xs"
-      @click="yearMonthPicker.showModal()"
+      @click="show()"
     >
       {{ headerLabel.format('YYYY年M月') }}
     </div>
 
     <dialog
-      id="yearMonthPicker"
+      ref="yearMonthPicker"
       class="modal"
       v-touch:swipe.left="() => navigateMonth('next')"
       v-touch:swipe.right="() => navigateMonth('prev')"
@@ -47,6 +47,11 @@
 
 <script setup lang="ts">
 import dayjs, { Dayjs } from 'dayjs';
+
+const yearMonthPicker = ref();
+const show = (): void => {
+  yearMonthPicker.value.showModal();
+}
 
 // カレンダー(親コンポーネント)のヘッダー部分に表示される年月ラベル
 const headerLabel: Ref<Dayjs> = useState('currentYearMonth');
