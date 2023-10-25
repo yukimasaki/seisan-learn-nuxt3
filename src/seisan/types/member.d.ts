@@ -1,8 +1,10 @@
 import { Group } from "./group";
+import { User } from "./user";
 
 export type Member = {
   userId: number,
   groupId: number,
+  group: Group,
 }
 
 export type MemberInUserOmitPassword = Member & {
