@@ -27,17 +27,17 @@
         <div class="flex flex-col">
           <label class="my-2">金額</label>
           <input
-            v-model="createTransactionDto.amount"
+            v-model="form.amount"
             type="number"
             placeholder="1980"
             class="input input-bordered w-full focus:outline-none bg-stone-50"
-            @blur="validate('amount', createTransactionDto.amount)"
+            @blur="validate('amount', form.amount)"
           />
           <span v-if="errors.amount" class="text-error text-sm">{{ errors.amount }}</span>
 
           <label class="my-2">カテゴリ</label>
           <select
-            v-model="createTransactionDto.category"
+            v-model="form.categoryId"
             class="select select-bordered w-full focus:outline-none bg-stone-50"
           >
             <option
@@ -50,16 +50,16 @@
 
           <label class="my-2">日付</label>
           <input
-            v-model="createTransactionDto.paymentDate"
+            v-model="form.paymentDate"
             type="date"
             class="input input-bordered w-full focus:outline-none bg-stone-50"
-            @blur="validate('paymentDate', createTransactionDto.paymentDate)"
+            @blur="validate('paymentDate', form.paymentDate)"
           />
           <span v-if="errors.paymentDate" class="text-error text-sm">{{ errors.paymentDate }}</span>
 
           <label class="my-2">メモ</label>
           <textarea
-            v-model="createTransactionDto.memo"
+            v-model="form.memo"
             class="textarea textarea-bordered w-full focus:outline-none bg-stone-50"
           />
 
@@ -67,19 +67,19 @@
             <label class="my-auto">割り勘方法</label>
             <div class="join my-auto">
               <input
-                v-model="createTransactionDto.paymentMethod"
+                v-model="form.paymentMethod"
                 @click="setValidate('actualPaymentAmounts', false); clearActualPaymentAmounts();"
                 type="radio" class="join-item btn btn-sm" aria-label="均等" value="均等">
               <input
-                v-model="createTransactionDto.paymentMethod"
+                v-model="form.paymentMethod"
                 @click="setValidate('actualPaymentAmounts', false); clearActualPaymentAmounts();"
                 type="radio" class="join-item btn btn-sm" aria-label="比率" value="比率" checked>
               <input
-                v-model="createTransactionDto.paymentMethod"
+                v-model="form.paymentMethod"
                 @click="setValidate('actualPaymentAmounts', false); clearActualPaymentAmounts();"
                 type="radio" class="join-item btn btn-sm" aria-label="金額" value="金額">
               <input
-                v-model="createTransactionDto.paymentMethod"
+                v-model="form.paymentMethod"
                 @click="setValidate('actualPaymentAmounts', true); clearActualPaymentAmounts();"
                 type="radio" class="join-item btn btn-sm" aria-label="なし" value="なし">
             </div>
@@ -87,7 +87,7 @@
 
           <div
             class="flex justify-between mb-2"
-            v-if="createTransactionDto.paymentMethod && createTransactionDto.paymentMethod !== 'なし'"
+            v-if="form.paymentMethod && form.paymentMethod !== 'なし'"
             v-for="member in members"
             :key="member.user.id"
           >
@@ -103,24 +103,24 @@
 
           <div
             class="flex justify-between mb-2 my-4"
-            v-if="createTransactionDto.paymentMethod && createTransactionDto.paymentMethod !== 'なし'"
+            v-if="form.paymentMethod && form.paymentMethod !== 'なし'"
           >
             <label class="my-auto">誰がいくら立て替えた？</label>
           </div>
 
           <div
             class="flex justify-between mb-2"
-            v-if="createTransactionDto.paymentMethod && createTransactionDto.paymentMethod !== 'なし'"
+            v-if="form.paymentMethod && form.paymentMethod !== 'なし'"
             v-for="(member, idx) in members"
             :key="member.user.id"
           >
             <span>{{ member.user.displayName }}</span>
             <div>
               <input
-                v-model="createTransactionDto.actualPaymentAmounts[idx]"
+                v-model="form.actualPaymentAmounts[idx]"
                 type="number"
                 class="input input-bordered focus:outline-none bg-stone-50 w-16 input-sm"
-                @blur="validate('actualPaymentAmounts', createTransactionDto.actualPaymentAmounts[idx])"
+                @blur="validate('actualPaymentAmounts', form.actualPaymentAmounts[idx])"
               >
               <span class="pl-1">円</span>
             </div>
@@ -140,7 +140,7 @@
           <button
             class="btn w-1/2 drop-shadow"
             :disabled="!valid"
-            @click="submit(createTransactionDto)"
+            @click="submit(form)"
           >
             作成
           </button>
@@ -164,16 +164,30 @@ import { useCategoryStore } from '../store/useCategoryStore';
 import { useMemberStore } from '../store/useMemberStore';
 import { useActiveGroupStore } from '../store/useActiveGroupStore';
 import { useBaseValidator } from '../validations/BaseValidator';
+import { useProfileStore } from '../store/useProfileStore';
 
 const itemDialog = ref();
 const loadingDialog = ref();
 
-const createTransactionDto = reactive({
+const profileStore = useProfileStore();
+const profile = profileStore.state;
+const creatorId: number | undefined = profile.value?.id;
+
+const activeGroupStore = useActiveGroupStore();
+const groupId = activeGroupStore.state.value;
+if (groupId) {
+  await fetchCategory(+groupId);
+  await fetchMember(+groupId);
+}
+
+const form = reactive({
   amount: '',
-  category: 1,
   paymentDate: dayjs().format('YYYY-MM-DD').valueOf(),
-  memo: '',
   paymentMethod: '比率',
+  categoryId: 1,
+  title: '',
+  memo: '',
+  status: '未精算',
   actualPaymentAmounts: [],
 });
 
@@ -183,34 +197,38 @@ const formSchema = {
   paymentDate: z.string().nonempty(),
   actualPaymentAmounts: z.number().nonnegative(),
 };
-const validator = useBaseValidator(formSchema, createTransactionDto);
+const validator = useBaseValidator(formSchema, form);
 const { errors, results, keys, validate, setValidate } = validator;
 const valid = computed(() => {
   return Object.values(results).every(result => result === true);
 });
 
 const clearActualPaymentAmounts = () => {
-  createTransactionDto.actualPaymentAmounts = [];
+  form.actualPaymentAmounts = [];
 }
 
 const clearAllInputs = async () => {
   await Promise.all([
-    createTransactionDto.amount = '',
-    createTransactionDto.category = 1,
-    createTransactionDto.paymentDate = dayjs().format('YYYY-MM-DD').valueOf(),
-    createTransactionDto.memo = '',
-    createTransactionDto.paymentMethod = '比率',
-    createTransactionDto.actualPaymentAmounts = [],
+    form.amount = '',
+    form.categoryId = 1,
+    form.paymentDate = dayjs().format('YYYY-MM-DD').valueOf(),
+    form.memo = '',
+    form.paymentMethod = '比率',
+    form.actualPaymentAmounts = [],
     keys.map(key => errors[key] = null),
   ]);
 }
 
 const isSubmitting: Ref<boolean> = ref(false);
-const submit = async (createTransactionDto: any) => {
+const submit = async (form: any) => {
   isSubmitting.value = true;
   itemDialog.value.close();
   await new Promise((resolve) => setTimeout(resolve, 3000));
-  console.log(createTransactionDto);
+  console.log(form);
+
+  // todo: API (POST /transaction)へcreateTransactionComplexを送信する処理
+
+
   isSubmitting.value = false;
 };
 
@@ -226,13 +244,6 @@ const openItemDialog = async () => {
   itemDialog.value.showModal();
 }
 
-const activeGroupStore = useActiveGroupStore();
-const groupId = activeGroupStore.state.value;
-if (groupId) {
-  await fetchCategory(+groupId);
-  await fetchMember(+groupId);
-}
-
 const categoryStore = useCategoryStore();
 const categories = categoryStore.state;
 
@@ -241,8 +252,8 @@ const members = memberStore.state;
 
 const unit = computed(() => {
     if (
-      createTransactionDto.paymentMethod === '均等' ||
-      createTransactionDto.paymentMethod === '比率'
+      form.paymentMethod === '均等' ||
+      form.paymentMethod === '比率'
     ) {
       return '%'
     } else {
