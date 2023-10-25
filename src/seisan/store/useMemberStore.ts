@@ -10,7 +10,7 @@ class MemberStore {
     this._state = useState('member', () => []);
   }
 
-  get state(): Readonly<Ref<readonly MemberInfo[]>> {
+  get state() {
     return readonly(this._state);
   }
 

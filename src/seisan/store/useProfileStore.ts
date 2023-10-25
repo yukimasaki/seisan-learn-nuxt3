@@ -10,7 +10,7 @@ class ProfileStore {
     this._state = useState('profile', () => null);
   }
 
-  get state(): Readonly<Ref<UserOmitPassword | null>> {
+  get state() {
     return readonly(this._state);
   }
 
