@@ -9,4 +9,4 @@ export type User = {
   members: Member[],
 }
 
-export type UserOmitPassword = Omit<User, 'id' | 'hashedPassword'>
+export type UserOmitPassword = Omit<User, 'hashedPassword'>
