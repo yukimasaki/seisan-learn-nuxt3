@@ -13,3 +13,5 @@ export type Transaction = {
   category: Category,
   groupId: number,
 }
+
+export type CreateTransactionDto = Omit<Transaction, 'id' | 'editorId' | 'category'>
