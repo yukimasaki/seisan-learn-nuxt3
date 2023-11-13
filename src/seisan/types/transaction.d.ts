@@ -14,4 +14,14 @@ export type Transaction = {
   groupId: number,
 }
 
-export type CreateTransactionDto = Omit<Transaction, 'id' | 'editorId' | 'category'>
+export type TransactionForm = Omit<Transaction, 'id' | 'editorId' | 'category'> & {
+  method: string,
+  ratioArray: {
+    id: number,
+    value: number,
+  }[],
+  actualPaymentAmountArray: {
+    id: number,
+    value: number,
+  }[],
+}
