@@ -42,22 +42,18 @@
           <div class="flex justify-between mb-2 my-4">
             <label class="my-auto">割り勘方法</label>
             <div class="join my-auto">
-              <input v-model="form.paymentMethod"
-                @click="setValidate('actualPaymentAmountArray', false); clearWarikanArray();" type="radio"
-                class="join-item btn btn-sm" aria-label="均等" value="均等">
-              <input v-model="form.paymentMethod"
-                @click="setValidate('actualPaymentAmountArray', false); clearWarikanArray();" type="radio"
-                class="join-item btn btn-sm" aria-label="比率" value="比率" checked>
-              <input v-model="form.paymentMethod"
-                @click="setValidate('actualPaymentAmountArray', false); clearWarikanArray();" type="radio"
-                class="join-item btn btn-sm" aria-label="金額" value="金額">
-              <input v-model="form.paymentMethod"
-                @click="setValidate('actualPaymentAmountArray', true); clearWarikanArray();" type="radio"
-                class="join-item btn btn-sm" aria-label="なし" value="なし">
+              <input v-model="form.method" @click="setValidate('actualPaymentAmountArray', false); clearWarikanArray();"
+                type="radio" class="join-item btn btn-sm" aria-label="均等" value="均等">
+              <input v-model="form.method" @click="setValidate('actualPaymentAmountArray', false); clearWarikanArray();"
+                type="radio" class="join-item btn btn-sm" aria-label="比率" value="比率" checked>
+              <input v-model="form.method" @click="setValidate('actualPaymentAmountArray', false); clearWarikanArray();"
+                type="radio" class="join-item btn btn-sm" aria-label="金額" value="金額">
+              <input v-model="form.method" @click="setValidate('actualPaymentAmountArray', true); clearWarikanArray();"
+                type="radio" class="join-item btn btn-sm" aria-label="なし" value="なし">
             </div>
           </div>
 
-          <div class="flex justify-between mb-2" v-if="form.paymentMethod && form.paymentMethod !== 'なし'"
+          <div class="flex justify-between mb-2" v-if="form.method && form.method !== 'なし'"
             v-for="(member, idx) in members" :key="member.user.id">
             <span>{{ member.user.displayName }}</span>
             <div>
@@ -69,11 +65,11 @@
           </div>
           <span v-if="errors.ratioArray" class="text-error text-sm">{{ errors.ratioArray }}</span>
 
-          <div class="flex justify-between mb-2 my-4" v-if="form.paymentMethod && form.paymentMethod !== 'なし'">
+          <div class="flex justify-between mb-2 my-4" v-if="form.method && form.method !== 'なし'">
             <label class="my-auto">誰がいくら立て替えた？</label>
           </div>
 
-          <div class="flex justify-between mb-2" v-if="form.paymentMethod && form.paymentMethod !== 'なし'"
+          <div class="flex justify-between mb-2" v-if="form.method && form.method !== 'なし'"
             v-for="(member, idx) in members" :key="member.user.id">
             <span>{{ member.user.displayName }}</span>
             <div>
@@ -132,7 +128,7 @@ if (groupId) {
 const form = reactive({
   amount: '',
   paymentDate: dayjs().format('YYYY-MM-DD').valueOf(),
-  paymentMethod: '比率',
+  method: '比率',
   categoryId: 1,
   title: '',
   memo: '',
@@ -165,7 +161,7 @@ const clearAllInputs = async () => {
     form.categoryId = 1,
     form.paymentDate = dayjs().format('YYYY-MM-DD').valueOf(),
     form.memo = '',
-    form.paymentMethod = '比率',
+    form.method = '比率',
     form.ratioArray = [],
     form.actualPaymentAmountArray = [],
     keys.map(key => errors[key] = null),
@@ -205,8 +201,8 @@ const members = memberStore.state;
 
 const unit = computed(() => {
   if (
-    form.paymentMethod === '均等' ||
-    form.paymentMethod === '比率'
+    form.method === '均等' ||
+    form.method === '比率'
   ) {
     return '%'
   } else {
