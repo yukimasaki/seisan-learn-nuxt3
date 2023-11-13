@@ -1,16 +1,10 @@
 <template>
   <div>
-    <button
-      class="btn btn-circle drop-shadow"
-      @click="openItemDialog()"
-    >
+    <button class="btn btn-circle drop-shadow" @click="openItemDialog()">
       <IconPencil></IconPencil>
     </button>
 
-    <dialog
-      ref="itemDialog"
-      class="modal"
-    >
+    <dialog ref="itemDialog" class="modal">
       <form method="dialog" class="modal-box w-full h-screen rounded-none">
         <!-- ヘッダー部分 -->
         <div class="flex justify-between items-center mb-4">
@@ -26,132 +20,87 @@
         <!-- ボディ部分 -->
         <div class="flex flex-col">
           <label class="my-2">金額</label>
-          <input
-            v-model="form.amount"
-            type="number"
-            placeholder="1980"
-            class="input input-bordered w-full focus:outline-none bg-stone-50"
-            @blur="validate('amount', form.amount)"
-          />
+          <input v-model="form.amount" type="number" placeholder="1980"
+            class="input input-bordered w-full focus:outline-none bg-stone-50" @blur="validate('amount', form.amount)" />
           <span v-if="errors.amount" class="text-error text-sm">{{ errors.amount }}</span>
 
           <label class="my-2">カテゴリ</label>
-          <select
-            v-model="form.categoryId"
-            class="select select-bordered w-full focus:outline-none bg-stone-50"
-          >
-            <option
-              :value="category.id"
-              v-for="category in categories"
-            >
+          <select v-model="form.categoryId" class="select select-bordered w-full focus:outline-none bg-stone-50">
+            <option :value="category.id" v-for="category in categories">
               {{ category.category }}
             </option>
           </select>
 
           <label class="my-2">日付</label>
-          <input
-            v-model="form.paymentDate"
-            type="date"
-            class="input input-bordered w-full focus:outline-none bg-stone-50"
-            @blur="validate('paymentDate', form.paymentDate)"
-          />
+          <input v-model="form.paymentDate" type="date" class="input input-bordered w-full focus:outline-none bg-stone-50"
+            @blur="validate('paymentDate', form.paymentDate)" />
           <span v-if="errors.paymentDate" class="text-error text-sm">{{ errors.paymentDate }}</span>
 
           <label class="my-2">メモ</label>
-          <textarea
-            v-model="form.memo"
-            class="textarea textarea-bordered w-full focus:outline-none bg-stone-50"
-          />
+          <textarea v-model="form.memo" class="textarea textarea-bordered w-full focus:outline-none bg-stone-50" />
 
           <div class="flex justify-between mb-2 my-4">
             <label class="my-auto">割り勘方法</label>
             <div class="join my-auto">
-              <input
-                v-model="form.paymentMethod"
-                @click="setValidate('actualPaymentAmounts', false); clearActualPaymentAmounts();"
-                type="radio" class="join-item btn btn-sm" aria-label="均等" value="均等">
-              <input
-                v-model="form.paymentMethod"
-                @click="setValidate('actualPaymentAmounts', false); clearActualPaymentAmounts();"
-                type="radio" class="join-item btn btn-sm" aria-label="比率" value="比率" checked>
-              <input
-                v-model="form.paymentMethod"
-                @click="setValidate('actualPaymentAmounts', false); clearActualPaymentAmounts();"
-                type="radio" class="join-item btn btn-sm" aria-label="金額" value="金額">
-              <input
-                v-model="form.paymentMethod"
-                @click="setValidate('actualPaymentAmounts', true); clearActualPaymentAmounts();"
-                type="radio" class="join-item btn btn-sm" aria-label="なし" value="なし">
+              <input v-model="form.paymentMethod"
+                @click="setValidate('actualPaymentAmountArray', false); clearWarikanArray();" type="radio"
+                class="join-item btn btn-sm" aria-label="均等" value="均等">
+              <input v-model="form.paymentMethod"
+                @click="setValidate('actualPaymentAmountArray', false); clearWarikanArray();" type="radio"
+                class="join-item btn btn-sm" aria-label="比率" value="比率" checked>
+              <input v-model="form.paymentMethod"
+                @click="setValidate('actualPaymentAmountArray', false); clearWarikanArray();" type="radio"
+                class="join-item btn btn-sm" aria-label="金額" value="金額">
+              <input v-model="form.paymentMethod"
+                @click="setValidate('actualPaymentAmountArray', true); clearWarikanArray();" type="radio"
+                class="join-item btn btn-sm" aria-label="なし" value="なし">
             </div>
           </div>
 
-          <div
-            class="flex justify-between mb-2"
-            v-if="form.paymentMethod && form.paymentMethod !== 'なし'"
-            v-for="member in members"
-            :key="member.user.id"
-          >
+          <div class="flex justify-between mb-2" v-if="form.paymentMethod && form.paymentMethod !== 'なし'"
+            v-for="(member, idx) in members" :key="member.user.id">
             <span>{{ member.user.displayName }}</span>
             <div>
-              <input
-                type="number"
+              <input v-model="form.ratioArray[idx]" type="number"
                 class="input input-bordered focus:outline-none bg-stone-50 w-16 input-sm"
-              >
+                @blur="validate('ratioArray', form.ratioArray[idx])">
               <span class="pl-1">{{ unit }}</span>
             </div>
           </div>
+          <span v-if="errors.ratioArray" class="text-error text-sm">{{ errors.ratioArray }}</span>
 
-          <div
-            class="flex justify-between mb-2 my-4"
-            v-if="form.paymentMethod && form.paymentMethod !== 'なし'"
-          >
+          <div class="flex justify-between mb-2 my-4" v-if="form.paymentMethod && form.paymentMethod !== 'なし'">
             <label class="my-auto">誰がいくら立て替えた？</label>
           </div>
 
-          <div
-            class="flex justify-between mb-2"
-            v-if="form.paymentMethod && form.paymentMethod !== 'なし'"
-            v-for="(member, idx) in members"
-            :key="member.user.id"
-          >
+          <div class="flex justify-between mb-2" v-if="form.paymentMethod && form.paymentMethod !== 'なし'"
+            v-for="(member, idx) in members" :key="member.user.id">
             <span>{{ member.user.displayName }}</span>
             <div>
-              <input
-                v-model="form.actualPaymentAmounts[idx]"
-                type="number"
+              <input v-model="form.actualPaymentAmountArray[idx]" type="number"
                 class="input input-bordered focus:outline-none bg-stone-50 w-16 input-sm"
-                @blur="validate('actualPaymentAmounts', form.actualPaymentAmounts[idx])"
-              >
+                @blur="validate('actualPaymentAmountArray', form.actualPaymentAmountArray[idx])">
               <span class="pl-1">円</span>
             </div>
           </div>
-          <span v-if="errors.actualPaymentAmounts" class="text-error text-sm">{{ errors.actualPaymentAmounts }}</span>
+          <span v-if="errors.actualPaymentAmountArray" class="text-error text-sm">{{ errors.actualPaymentAmountArray
+          }}</span>
         </div>
 
         <!-- フッター部分 -->
         <div class="modal-action justify-center">
-          <button
-            class="btn w-1/2 drop-shadow"
-            @click="clearAllInputs()"
-          >
+          <button class="btn w-1/2 drop-shadow" @click="clearAllInputs()">
             キャンセル
           </button>
 
-          <button
-            class="btn w-1/2 drop-shadow"
-            :disabled="!valid"
-            @click="submit(form)"
-          >
+          <button class="btn w-1/2 drop-shadow" :disabled="!valid" @click="submit(form)">
             作成
           </button>
         </div>
       </form>
     </dialog>
 
-    <dialog
-      ref="loadingDialog"
-      class="modal"
-    >
+    <dialog ref="loadingDialog" class="modal">
       <span class="loading loading-spinner loading-lg"></span>
     </dialog>
   </div>
@@ -188,14 +137,16 @@ const form = reactive({
   title: '',
   memo: '',
   status: '未精算',
-  actualPaymentAmounts: [],
+  ratioArray: [],
+  actualPaymentAmountArray: [],
 });
 
 // バリデーション
 const formSchema = {
   amount: z.number().nonnegative(),
   paymentDate: z.string().nonempty(),
-  actualPaymentAmounts: z.number().nonnegative(),
+  ratioArray: z.number().nonnegative(),
+  actualPaymentAmountArray: z.number().nonnegative(),
 };
 const validator = useBaseValidator(formSchema, form);
 const { errors, results, keys, validate, setValidate } = validator;
@@ -203,8 +154,9 @@ const valid = computed(() => {
   return Object.values(results).every(result => result === true);
 });
 
-const clearActualPaymentAmounts = () => {
-  form.actualPaymentAmounts = [];
+const clearWarikanArray = () => {
+  form.ratioArray = [];
+  form.actualPaymentAmountArray = [];
 }
 
 const clearAllInputs = async () => {
@@ -214,7 +166,8 @@ const clearAllInputs = async () => {
     form.paymentDate = dayjs().format('YYYY-MM-DD').valueOf(),
     form.memo = '',
     form.paymentMethod = '比率',
-    form.actualPaymentAmounts = [],
+    form.ratioArray = [],
+    form.actualPaymentAmountArray = [],
     keys.map(key => errors[key] = null),
   ]);
 }
@@ -251,13 +204,13 @@ const memberStore = useMemberStore();
 const members = memberStore.state;
 
 const unit = computed(() => {
-    if (
-      form.paymentMethod === '均等' ||
-      form.paymentMethod === '比率'
-    ) {
-      return '%'
-    } else {
-      return '円'
-    }
+  if (
+    form.paymentMethod === '均等' ||
+    form.paymentMethod === '比率'
+  ) {
+    return '%'
+  } else {
+    return '円'
+  }
 });
 </script>
