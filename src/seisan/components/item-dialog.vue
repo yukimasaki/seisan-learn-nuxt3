@@ -110,6 +110,7 @@ import { useMemberStore } from '../store/useMemberStore';
 import { useActiveGroupStore } from '../store/useActiveGroupStore';
 import { useBaseValidator } from '../validations/BaseValidator';
 import { useProfileStore } from '../store/useProfileStore';
+import { TransactionForm } from '../types/transaction';
 
 const itemDialog = ref();
 const loadingDialog = ref();
@@ -176,7 +177,21 @@ const submit = async (form: any) => {
   console.log(form);
 
   // todo: API (POST /transaction)へcreateTransactionComplexを送信する処理
-
+  if (!creatorId || !groupId) return;
+  const createTransactionDto: TransactionForm = {
+    amount: form.amount,
+    paymentDate: dayjs(form.paymentDate).toDate(),
+    method: form.method,
+    categoryId: form.categoryId,
+    title: form.title,
+    memo: form.memo,
+    status: form.status,
+    ratioArray: form.ratioArray,
+    actualPaymentAmountArray: form.actualPaymentAmountArray,
+    creatorId,
+    groupId: +groupId,
+  }
+  console.log(createTransactionDto);
 
   isSubmitting.value = false;
 };
