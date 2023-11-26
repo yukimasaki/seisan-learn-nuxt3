@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="bg-stone-50"
-    v-for="transaction in sortedTransactions"
-    :key="transaction.id"
-  >
+  <div class="bg-stone-50" v-for="transaction in sortedTransactions" :key="transaction.id">
     <div class="px-4 py-1 border-b">
       <div class="flex justify-between font-semibold">
         <span>{{ transaction.category.category }}</span>
