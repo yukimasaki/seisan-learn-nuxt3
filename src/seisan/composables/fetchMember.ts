@@ -6,7 +6,7 @@ export const fetchMember = async (
 ) => {
   const apiUrl = `http://seisan.local:3001`;
   const { data: member }: { data: Ref<MemberInfo[]> } = await useFetch(
-    `${apiUrl}/member?groupId=${groupId.toString()}`
+    `${apiUrl}/members?groupId=${groupId.toString()}`
   );
 
   const memberStore = useMemberStore();

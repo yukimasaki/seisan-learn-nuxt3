@@ -6,7 +6,7 @@ export const fetchCategory = async (
 ) => {
   const apiUrl = `http://seisan.local:3001`;
   const { data: category }: { data: Ref<Category[]> } = await useFetch(
-    `${apiUrl}/category?group=${groupId.toString()}`
+    `${apiUrl}/categories?groupId=${groupId.toString()}`
   );
 
   const categoryStore = useCategoryStore();
