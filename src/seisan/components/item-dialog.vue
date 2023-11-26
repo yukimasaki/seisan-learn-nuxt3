@@ -57,9 +57,12 @@
             v-for="(member, idx) in members" :key="member.user.id">
             <span>{{ member.user.displayName }}</span>
             <div>
-              <input v-model="form.ratioArray[idx]" type="number"
+              <!-- <input type="hidden" v-model="form.paymentInfoArray[idx].userId"> -->
+              <!-- <input v-model="form.paymentInfoArray[idx].ratio" type="number"
                 class="input input-bordered focus:outline-none bg-stone-50 w-16 input-sm"
-                @blur="validate('ratioArray', form.ratioArray[idx])">
+                @blur="validate('ratioArray', form.ratioArray[idx])"> -->
+              <input v-model="form.paymentInfoArray[idx].ratio" type="number"
+                class="input input-bordered focus:outline-none bg-stone-50 w-16 input-sm">
               <span class="pl-1">{{ unit }}</span>
             </div>
           </div>
@@ -73,9 +76,11 @@
             v-for="(member, idx) in members" :key="member.user.id">
             <span>{{ member.user.displayName }}</span>
             <div>
-              <input v-model="form.actualPaymentAmountArray[idx]" type="number"
+              <!-- <input v-model="form.paymentInfoArray[idx].amount" type="number"
                 class="input input-bordered focus:outline-none bg-stone-50 w-16 input-sm"
-                @blur="validate('actualPaymentAmountArray', form.actualPaymentAmountArray[idx])">
+                @blur="validate('actualPaymentAmountArray', form.actualPaymentAmountArray[idx])"> -->
+              <input v-model="form.paymentInfoArray[idx].amount" type="number"
+                class="input input-bordered focus:outline-none bg-stone-50 w-16 input-sm">
               <span class="pl-1">円</span>
             </div>
           </div>
@@ -126,7 +131,24 @@ if (groupId) {
   await fetchMember(+groupId);
 }
 
-const form = reactive({
+interface PaymentInfoArray {
+  userId: number;
+  ratio: number;
+  amount: number;
+}
+
+interface Form {
+  amount: string;
+  paymentDate: string;
+  method: string;
+  categoryId: number;
+  title: string;
+  memo: string;
+  status: string;
+  paymentInfoArray: PaymentInfoArray[];
+}
+
+const form: Form = reactive({
   amount: '',
   paymentDate: dayjs().format('YYYY-MM-DD').valueOf(),
   method: '比率',
@@ -134,8 +156,11 @@ const form = reactive({
   title: '',
   memo: '',
   status: '未精算',
-  ratioArray: [],
-  actualPaymentAmountArray: [],
+  paymentInfoArray: [{
+    userId: 0,
+    ratio: 0,
+    amount: 0,
+  }],
 });
 
 // バリデーション
@@ -152,8 +177,8 @@ const valid = computed(() => {
 });
 
 const clearWarikanArray = () => {
-  form.ratioArray = [];
-  form.actualPaymentAmountArray = [];
+  // form.ratioArray = [];
+  // form.actualPaymentAmountArray = [];
 }
 
 const clearAllInputs = async () => {
@@ -163,8 +188,8 @@ const clearAllInputs = async () => {
     form.paymentDate = dayjs().format('YYYY-MM-DD').valueOf(),
     form.memo = '',
     form.method = '比率',
-    form.ratioArray = [],
-    form.actualPaymentAmountArray = [],
+    // form.ratioArray = [],
+    // form.actualPaymentAmountArray = [],
     keys.map(key => errors[key] = null),
   ]);
 }
