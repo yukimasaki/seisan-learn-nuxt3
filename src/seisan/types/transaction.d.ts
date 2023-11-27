@@ -16,12 +16,9 @@ export type Transaction = {
 
 export type TransactionForm = Omit<Transaction, 'id' | 'editorId' | 'category'> & {
   method: string,
-  ratioArray: {
-    id: number,
-    value: number,
-  }[],
-  actualPaymentAmountArray: {
-    id: number,
-    value: number,
+  paymentInfoArray: {
+    userId: number,
+    ratio: number,
+    amountEachMember: number,
   }[],
 }
