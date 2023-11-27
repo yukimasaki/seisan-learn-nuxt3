@@ -57,16 +57,13 @@
             v-for="(member, idx) in members" :key="member.user.id">
             <span>{{ member.user.displayName }}</span>
             <div>
-              <!-- <input type="hidden" v-model="form.paymentInfoArray[idx].userId"> -->
-              <!-- <input v-model="form.paymentInfoArray[idx].ratio" type="number"
-                class="input input-bordered focus:outline-none bg-stone-50 w-16 input-sm"
-                @blur="validate('ratioArray', form.ratioArray[idx])"> -->
               <input v-model="form.paymentInfoArray[idx].ratio" type="number"
-                class="input input-bordered focus:outline-none bg-stone-50 w-16 input-sm">
+                class="input input-bordered focus:outline-none bg-stone-50 w-16 input-sm"
+                @blur="validate('ratio', form.paymentInfoArray[idx].ratio)">
               <span class="pl-1">{{ unit }}</span>
             </div>
           </div>
-          <span v-if="errors.ratioArray" class="text-error text-sm">{{ errors.ratioArray }}</span>
+          <span v-if="errors.ratio" class="text-error text-sm">{{ errors.ratio }}</span>
 
           <div class="flex justify-between mb-2 my-4" v-if="form.method && form.method !== 'なし'">
             <label class="my-auto">誰がいくら立て替えた？</label>
@@ -76,15 +73,13 @@
             v-for="(member, idx) in members" :key="member.user.id">
             <span>{{ member.user.displayName }}</span>
             <div>
-              <!-- <input v-model="form.paymentInfoArray[idx].amount" type="number"
-                class="input input-bordered focus:outline-none bg-stone-50 w-16 input-sm"
-                @blur="validate('actualPaymentAmountArray', form.actualPaymentAmountArray[idx])"> -->
               <input v-model="form.paymentInfoArray[idx].amount" type="number"
-                class="input input-bordered focus:outline-none bg-stone-50 w-16 input-sm">
+                class="input input-bordered focus:outline-none bg-stone-50 w-16 input-sm"
+                @blur="validate('amountEachMember', form.paymentInfoArray[idx].amount)">
               <span class="pl-1">円</span>
             </div>
           </div>
-          <span v-if="errors.actualPaymentAmountArray" class="text-error text-sm">{{ errors.actualPaymentAmountArray
+          <span v-if="errors.amountEachMember" class="text-error text-sm">{{ errors.amountEachMember
           }}</span>
         </div>
 
@@ -131,10 +126,16 @@ if (groupId) {
   await fetchMember(+groupId);
 }
 
+const categoryStore = useCategoryStore();
+const categories = categoryStore.state;
+
+const memberStore = useMemberStore();
+const members = memberStore.state;
+
 interface PaymentInfoArray {
   userId: number;
-  ratio: number;
-  amount: number;
+  ratio: string;
+  amount: string;
 }
 
 interface Form {
@@ -148,6 +149,14 @@ interface Form {
   paymentInfoArray: PaymentInfoArray[];
 }
 
+const initPaymentInfoArray = (): PaymentInfoArray[] => {
+  return Array.from({ length: members.value.length }, (_, idx) => ({
+    userId: members.value[idx].userId,
+    ratio: '',
+    amount: '',
+  }));
+}
+
 const form: Form = reactive({
   amount: '',
   paymentDate: dayjs().format('YYYY-MM-DD').valueOf(),
@@ -156,19 +165,15 @@ const form: Form = reactive({
   title: '',
   memo: '',
   status: '未精算',
-  paymentInfoArray: [{
-    userId: 0,
-    ratio: 0,
-    amount: 0,
-  }],
+  paymentInfoArray: initPaymentInfoArray(),
 });
 
 // バリデーション
 const formSchema = {
   amount: z.number().nonnegative(),
   paymentDate: z.string().nonempty(),
-  ratioArray: z.number().nonnegative(),
-  actualPaymentAmountArray: z.number().nonnegative(),
+  ratio: z.number(),
+  amountEachMember: z.number(),
 };
 const validator = useBaseValidator(formSchema, form);
 const { errors, results, keys, validate, setValidate } = validator;
@@ -177,8 +182,7 @@ const valid = computed(() => {
 });
 
 const clearWarikanArray = () => {
-  // form.ratioArray = [];
-  // form.actualPaymentAmountArray = [];
+  form.paymentInfoArray = initPaymentInfoArray();
 }
 
 const clearAllInputs = async () => {
@@ -188,9 +192,9 @@ const clearAllInputs = async () => {
     form.paymentDate = dayjs().format('YYYY-MM-DD').valueOf(),
     form.memo = '',
     form.method = '比率',
-    // form.ratioArray = [],
-    // form.actualPaymentAmountArray = [],
+    form.paymentInfoArray = initPaymentInfoArray(),
     keys.map(key => errors[key] = null),
+    keys.map(key => results[key] = false),
   ]);
 }
 
@@ -211,14 +215,14 @@ const submit = async (form: any) => {
     title: form.title,
     memo: form.memo,
     status: form.status,
-    ratioArray: form.ratioArray,
-    actualPaymentAmountArray: form.actualPaymentAmountArray,
+    paymentInfoArray: form.paymentInfoArray,
     creatorId,
     groupId: +groupId,
   }
   console.log(createTransactionDto);
 
   isSubmitting.value = false;
+  clearAllInputs();
 };
 
 watch(isSubmitting, () => {
@@ -232,12 +236,6 @@ watch(isSubmitting, () => {
 const openItemDialog = async () => {
   itemDialog.value.showModal();
 }
-
-const categoryStore = useCategoryStore();
-const categories = categoryStore.state;
-
-const memberStore = useMemberStore();
-const members = memberStore.state;
 
 const unit = computed(() => {
   if (
