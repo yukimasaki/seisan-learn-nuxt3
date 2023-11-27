@@ -138,7 +138,7 @@ interface PaymentInfoArray {
   amount: string;
 }
 
-interface Form {
+interface CreateTransactionDto {
   amount: string;
   paymentDate: string;
   method: string;
@@ -157,7 +157,7 @@ const initPaymentInfoArray = (): PaymentInfoArray[] => {
   }));
 }
 
-const form: Form = reactive({
+const form: CreateTransactionDto = reactive({
   amount: '',
   paymentDate: dayjs().format('YYYY-MM-DD').valueOf(),
   method: '比率',
